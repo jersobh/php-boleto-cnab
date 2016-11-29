@@ -18,6 +18,7 @@ O projeto utiliza HHVM 3.15.3 + MongoDB 3.2
   - POST http://localhost/setup/clear para fazer um reset da API
 
 ### Configurações
+Para rodar a API em um domínio:
   - Edite o arquivo sites/default.vhost
   - Altere o parâmetro server_name para seu domínio
 
