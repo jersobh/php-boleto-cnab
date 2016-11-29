@@ -26,3 +26,7 @@ Para rodar a API em um domínio:
 
 Os arquivos de log de serviços (Nginx, HHVM, MongoDB) são salvos automaticamente em logs/.
 Os logs gerados pela API são salvos em www/api/log/app.log.
+
+
+   [OpenCnabPHP]: <https://github.com/QuilhaSoft/OpenCnabPHP>
+   [boletophp]: <https://github.com/CobreGratis/boletophp>
