@@ -1,0 +1,55 @@
+together-front:
+  build: .
+  ports:
+    - "80:80"
+    - "443:443"
+    - "9000:9000"
+  links:
+    - together-mysql:mysql
+    - together-mongo:mongo
+    - together-memcached:memcached
+    - together-redis:redis
+    - together-elasticsearch:elasticsearch
+    - together-rabbitmq:rabbitmq
+  volumes:
+    - ./www:/var/www
+    - ./sites:/etc/nginx/conf.d
+    - ./logs:/var/log/supervisor
+
+together-mysql:
+  image: mysql:5.7
+  container_name: together-mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=t0g3th3r
+    - MYSQL_DATABASE=together
+    - MYSQL_USER=together
+    - MYSQL_PASSWORD=t0g3th3r
+
+together-mongo:
+  image: mongo
+  container_name: together-mongodb
+  ports:
+    - "27017:27017"
+
+together-memcached:
+  image: memcached
+  container_name: together-memcached
+  ports:
+    - "11211:11211"
+
+together-redis:
+  image: redis
+  ports:
+    - "6379:6379"
+
+together-elasticsearch:
+  image: elasticsearch
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+
+together-rabbitmq:
+  image: rabbitmq:3.6.1-management
+  ports:
+    - "15672:15672"
+    - "5672:5672"
