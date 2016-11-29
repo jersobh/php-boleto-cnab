@@ -4,7 +4,7 @@ namespace App\Action;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-final class HomeAction extends BaseAction
+final class CnabAction extends BaseAction
 {
 
     public function __invoke(Request $request, Response $response, $args)

@@ -48,5 +48,5 @@ $container['mongodb'] = function ($c) {
 // -----------------------------------------------------------------------------
 
 $container[App\Action\HomeAction::class] = function ($c) {
-    return new App\Action\HomeAction($c->get('view'), $c->get('logger'));
+    return new App\Action\HomeAction($c);
 };
