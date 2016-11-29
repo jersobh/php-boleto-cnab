@@ -37,6 +37,12 @@ $container['logger'] = function ($c) {
     return $logger;
 };
 
+$container['mongodb'] = function ($c) {
+    $m = new MongoClient("mongodb://pbc-mongodb:27017", array("connect" => true), array()); // connect
+    $db = $m->selectDB("pbc");
+    return $db;
+};
+
 // -----------------------------------------------------------------------------
 // Action factories
 // -----------------------------------------------------------------------------

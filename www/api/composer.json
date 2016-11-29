@@ -20,6 +20,8 @@
         "slim/slim": "^3.0",
         "slim/twig-view": "^2.0",
         "slim/flash": "^0.1.0",
-        "monolog/monolog": "^1.13"
+        "monolog/monolog": "^1.13",
+        "rctnet/opencnabphp": "@dev",
+        "tiexpert/ws-boleto-santander": "@dev"
     }
 }

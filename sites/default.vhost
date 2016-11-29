@@ -1,6 +1,6 @@
 server {
-  server_name tog.social www.tog.social localhost;
-  root        /var/www/together/public;
+  server_name localhost;
+  root        /var/www/api/public;
   index       index.php;
 
   gzip on;
@@ -40,7 +40,6 @@ server {
     include       fastcgi_params;
     fastcgi_index index.php;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    #fastcgi_pass  unix:/var/run/php5-fpm.sock;
     fastcgi_pass  unix:/var/run/hhvm/hhvm.sock;
   }
 }
