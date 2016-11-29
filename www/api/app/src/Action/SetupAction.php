@@ -4,7 +4,6 @@ namespace App\Action;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Monolog\ErrorHandler;
 
 final class SetupAction extends BaseAction {
 

@@ -8,4 +8,6 @@ $app->get('/setup', 'App\Action\SetupAction:setup');
 
 $app->get('/setup/clear', 'App\Action\SetupAction:clear');
 
-//$app->get('/', 'App\Controller\HomeController:dispatch');
+$app->group('/remessa', function () {
+        $this->get('/gerar', 'App\Action\CnabAction:geraRemessa');
+    });
