@@ -11,3 +11,7 @@ $app->get('/setup/clear', 'App\Action\SetupAction:clear');
 $app->group('/remessa', function () {
         $this->get('/gerar', 'App\Action\CnabAction:geraRemessa');
     });
+    
+$app->group('/retorno', function () {
+        $this->post('/processa', 'App\Action\CnabAction:processaRetorno');
+    });

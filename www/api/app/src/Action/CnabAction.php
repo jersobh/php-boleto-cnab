@@ -84,7 +84,15 @@ final class CnabAction extends BaseAction {
      * @param type $args
      */
     public function processaRetorno(Request $request, Response $response, $args) {
-        $arquivo = $request->getParam('arquivo'); //Pega caminho do arquivo enviado por parâmetro
+        $files = $request->getUploadedFiles();
+        if (empty($files['newfile'])) {
+            $response->withJson('{ "erro" : { "Nenhum arquivo enviado"} }');
+            $response->withStatus(500);
+            return $response;
+        }
+
+        $arquivo = $files['newfile'];
+        //$arquivo = $request->getParam('arquivo'); //Pega caminho do arquivo enviado por parâmetro
         $fileContent = file_get_contents($arquivo); //Pega dados do arquivo de retorno
         $arquivo = new Retorno($fileContent); //Processa retorno
         $registros = $arquivo->getRegistros(); //Peg registros
