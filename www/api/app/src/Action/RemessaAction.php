@@ -117,19 +117,19 @@ final class RemessaAction {
         $arquivo->configure(array(
             'data_geracao' => new DateTime(),
             'data_gravacao' => new DateTime(),
-            'nome_fantasia' => 'Nome Fantasia da sua empresa', // seu nome de empresa
-            'razao_social' => 'Razão social da sua empresa', // sua razão social
-            'cnpj' => '111', // seu cnpj completo
+            'nome_fantasia' => $dados->nome_fantasia, // seu nome de empresa
+            'razao_social' => $dados->razao_social, // sua razão social
+            'cnpj' => $dados->cnpj, // seu cnpj completo
             'banco' => $codigo_banco, //código do banco
-            'logradouro' => 'Logradouro da Sua empresa',
-            'numero' => 'Número do endereço',
-            'bairro' => 'Bairro da sua empresa',
-            'cidade' => 'Cidade da sua empresa',
-            'uf' => 'Sigla da cidade, ex SP',
-            'cep' => 'CEP do endereço da sua cidade',
-            'agencia' => '1111',
-            'conta' => '22222', // número da conta
-            'conta_dac' => '2', // digito da conta
+            'logradouro' => $dados->logradouro,
+            'numero' => $dados->numero,
+            'bairro' => $dados->bairro,
+            'cidade' => $dados->cidade,
+            'uf' => $dados->uf,
+            'cep' => $dados->cep,
+            'agencia' => $dados->agencia,
+            'conta' => $dados->conta, // número da conta
+            'conta_dac' => $dados->conta_dv, // digito da conta
         ));
 
 // você pode adicionar vários boletos em uma remessa
@@ -138,7 +138,7 @@ final class RemessaAction {
             'nosso_numero' => '1234567',
             'numero_documento' => '1234567',
             'carteira' => '109',
-            'especie' => Cnab\Especie::ITAU_DUPLICATA_DE_SERVICO, // Você pode consultar as especies Cnab\Especie
+            'especie' => \Cnab\Especie::ITAU_DUPLICATA_MERCANTIL, // Você pode consultar as especies Cnab\Especie
             'valor' => 100.39, // Valor do boleto
             'instrucao1' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias, futuramente poderemos ter uma constante
             'instrucao2' => 0, // preenchido com zeros
