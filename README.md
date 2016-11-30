@@ -102,9 +102,6 @@ Para rodar a API em um domínio:
 Os arquivos de log de serviços (Nginx, HHVM, MongoDB) são salvos automaticamente em logs/.
 Os logs gerados pela API são salvos em www/api/log/app.log.
 
-
-
-
 ### Homologados
 
   - Caixa Econômica Federal - Cnab240_SIGCB
@@ -117,7 +114,13 @@ Os logs gerados pela API são salvos em www/api/log/app.log.
   - Santander
   - Bradesco
 
+### Grupo de Discussão
+
+* [Telegram] - Biblioteca para gerar remessas e processar retornos - Itaú, Caixa e Sicoob
+
+
 
    [OpenCnabPHP]: <https://github.com/QuilhaSoft/OpenCnabPHP>
    [CnabPHP]: <https://github.com/andersondanilo/CnabPHP>
    [boletophp]: <https://github.com/CobreGratis/boletophp>
+   [telegram]: <https://telegram.me/joinchat/CeCR-wsdisesG2yhCJwRIQ>
