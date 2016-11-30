@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Action;
+namespace App\Controller;
 
 use \CnabPHP\Remessa;
 use \CnabPHP\Retorno;
 
-final class RemessaAction {
+final class RemessaController {
 
     function geraItau($dados) {
         $arquivo = new Remessa(341, 'Cnab400', array(

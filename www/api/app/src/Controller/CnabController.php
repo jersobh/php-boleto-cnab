@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Action;
+namespace App\Controller;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 use \CnabPHP\Remessa;
 use \CnabPHP\Retorno;
 
-final class CnabAction extends BaseAction {
+final class CnabController extends BaseController {
 
     private $remessa_controller;
 

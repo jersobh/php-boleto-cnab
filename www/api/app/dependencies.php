@@ -44,13 +44,13 @@ $container['mongodb'] = function ($c) {
 };
 
 // -----------------------------------------------------------------------------
-// Action factories
+// Controller factories
 // -----------------------------------------------------------------------------
 
-$container[App\Action\HomeAction::class] = function ($c) {
-    return new App\Action\HomeAction($c);
+$container[App\Controller\HomeController::class] = function ($c) {
+    return new App\Controller\HomeController($c);
 };
 
 $container['remessa'] = function ($c) {
-    return new App\Action\RemessaAction($c);
+    return new App\Controller\RemessaController($c);
 };

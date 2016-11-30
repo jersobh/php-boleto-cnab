@@ -1,11 +1,11 @@
 <?php
-namespace App\Action;
+namespace App\Controller;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Container;
 
-class BaseAction
+class BaseController
 {
     protected $view;
     protected $logger;

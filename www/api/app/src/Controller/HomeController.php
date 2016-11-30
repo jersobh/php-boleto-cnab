@@ -1,10 +1,10 @@
 <?php
-namespace App\Action;
+namespace App\Controller;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-final class HomeAction extends BaseAction
+final class HomeController extends BaseController
 {
 
     public function __invoke(Request $request, Response $response, $args)

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Action;
+namespace App\Controller;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-final class SetupAction extends BaseAction {
+final class SetupController extends BaseController {
 
     public function setup() {
         
