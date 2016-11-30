@@ -116,7 +116,7 @@ Os logs gerados pela API são salvos em www/api/log/app.log.
 
 ### Grupo de Discussão
 
-* [Telegram] - Biblioteca para gerar remessas e processar retornos - Itaú, Caixa e Sicoob
+* [Telegram] - Grupo de discussão no Telegram
 
 
 
