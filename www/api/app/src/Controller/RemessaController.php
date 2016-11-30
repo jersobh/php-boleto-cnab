@@ -40,7 +40,7 @@ final class RemessaController
                 'seu_numero' => '', // se nao informado usarei o nosso numero
                 /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
                 'carteira_banco' => $boleto->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
-                'cod_carteira' => $dados->codigo_carteira, // I para a maioria ddas carteiras do itau
+                'cod_carteira' => $boleto->codigo_carteira, // I para a maioria ddas carteiras do itau
                 /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
                 'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
                 'valor' => $boleto->valor, // Valor do boleto como float valido em php
