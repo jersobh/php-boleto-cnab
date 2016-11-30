@@ -6,11 +6,12 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Container;
 
-class BaseController
+abstract class BaseController
 {
     protected $view;
     protected $logger;
     protected $mongodb;
+    protected $flash;
 
     public function __construct(Container $c)
     {
