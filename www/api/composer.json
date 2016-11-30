@@ -16,6 +16,9 @@
             "App\\": "app/src"
         }
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*"
+    },
     "require": {
         "slim/slim": "^3.0",
         "slim/twig-view": "^2.0",
