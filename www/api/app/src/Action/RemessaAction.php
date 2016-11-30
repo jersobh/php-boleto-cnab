@@ -111,16 +111,19 @@ final class RemessaAction {
         print $arquivo->getText();
     }
 
-    private function geraBB($dados) {
+    function geraBB($dados) {
         $codigo_banco = \Cnab\Banco::BANCO_DO_BRASIL;
         $arquivo = new \Cnab\Remessa\Cnab240\Arquivo($codigo_banco);
         $arquivo->configure(array(
-            'data_geracao' => new DateTime(),
-            'data_gravacao' => new DateTime(),
+            'data_geracao' => new \DateTime(),
+            'data_gravacao' => new \DateTime(),
             'nome_fantasia' => $dados->nome_fantasia, // seu nome de empresa
             'razao_social' => $dados->razao_social, // sua razão social
             'cnpj' => $dados->cnpj, // seu cnpj completo
             'banco' => $codigo_banco, //código do banco
+            'codigo_convenio' => '11',
+            'codigo_carteira' => '11',
+            'variacao_carteira' => 1,
             'logradouro' => $dados->logradouro,
             'numero' => $dados->numero,
             'bairro' => $dados->bairro,
@@ -128,17 +131,19 @@ final class RemessaAction {
             'uf' => $dados->uf,
             'cep' => $dados->cep,
             'agencia' => $dados->agencia,
+            'agencia_dv' => $dados->agencia_dv,
             'conta' => $dados->conta, // número da conta
-            'conta_dac' => $dados->conta_dv, // digito da conta
+            'conta_dv' => $dados->conta_dv, // digito da conta
+            'operacao' => '001',
+            'numero_sequencial_arquivo' => '1',
         ));
 
-// você pode adicionar vários boletos em uma remessa
+        foreach($dados->detalhes as $detalhe){
         $arquivo->insertDetalhe(array(
             'codigo_ocorrencia' => 1, // 1 = Entrada de título, futuramente poderemos ter uma constante
-            'nosso_numero' => '1234567',
-            'numero_documento' => '1234567',
-            'carteira' => '109',
-            'especie' => \Cnab\Especie::ITAU_DUPLICATA_MERCANTIL, // Você pode consultar as especies Cnab\Especie
+            'nosso_numero' => '12345',
+            'numero_documento' => '12345',
+            'especie' => \Cnab\Especie::BB_DUPLICATA_MERCANTIL, // Você pode consultar as especies Cnab\Especie
             'valor' => 100.39, // Valor do boleto
             'instrucao1' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias, futuramente poderemos ter uma constante
             'instrucao2' => 0, // preenchido com zeros
@@ -150,17 +155,18 @@ final class RemessaAction {
             'sacado_cep' => '11111222', // sem hífem
             'sacado_cidade' => 'Cidade do cliente',
             'sacado_uf' => 'SP',
-            'data_vencimento' => new DateTime('2014-06-08'),
-            'data_cadastro' => new DateTime('2014-06-01'),
+            'data_vencimento' => new \DateTime('2014-06-08'),
+            'data_cadastro' => new \DateTime('2014-06-01'),
             'juros_de_um_dia' => 0.10, // Valor do juros de 1 dia'
-            'data_desconto' => new DateTime('2014-06-01'),
+            'data_desconto' => new \DateTime('2014-06-01'),
             'valor_desconto' => 10.0, // Valor do desconto
             'prazo' => 10, // prazo de dias para o cliente pagar após o vencimento
             'taxa_de_permanencia' => '0', //00 = Acata Comissão por Dia (recomendável), 51 Acata Condições de Cadastramento na CAIXA
             'mensagem' => 'Descrição do boleto',
-            'data_multa' => new DateTime('2014-06-09'), // data da multa
+            'data_multa' => new \DateTime('2014-06-09'), // data da multa
             'valor_multa' => 10.0, // valor da multa
         ));
+        }
 
         $arquivo->save('remessa-bb.txt');
         header("Content-type: text/plain");
