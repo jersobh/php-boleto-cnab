@@ -10,7 +10,8 @@ $ docker-compose up
 ### Tecnologias
 
 O projeto utiliza HHVM 3.15.3 + MongoDB 3.2
-* [OpenCnabPHP] - Biblioteca para gerar remessas e processar retornos
+* [OpenCnabPHP] - Biblioteca para gerar remessas e processar retornos - Itaú, Caixa e Sicoob
+* [CnabPHP] - Biblioteca para gerar remessas e processar retornos - Banco do Brasil
 * [boletophp] - Biblioteca para gerar boletos
 
 ### Instruções
@@ -28,5 +29,21 @@ Os arquivos de log de serviços (Nginx, HHVM, MongoDB) são salvos automaticamen
 Os logs gerados pela API são salvos em www/api/log/app.log.
 
 
+
+
+### Homologados
+
+  - Caixa Econômica Federal - Cnab240_SIGCB
+  - Banco do Brasil - Cnab240
+  - Itaú - Cnab400
+  - SICOOB - Cnab400
+
+### TODO
+
+  - Santander
+  - Bradesco
+
+
    [OpenCnabPHP]: <https://github.com/QuilhaSoft/OpenCnabPHP>
+   [CnabPHP]: <https://github.com/andersondanilo/CnabPHP>
    [boletophp]: <https://github.com/CobreGratis/boletophp>
