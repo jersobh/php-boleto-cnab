@@ -37,33 +37,33 @@ final class RemessaController
             $lote->inserirDetalhe(array(
                 'codigo_ocorrencia' => 1, //1 = Entrada de título, para outras opçoes ver nota explicativa C004 manual Cnab_SIGCB na pasta docs
                 'nosso_numero' => $boleto->nosso_numero, // numero sequencial de boleto
-                'seu_numero' => 1, // se nao informado usarei o nosso numero 
+                'seu_numero' => '', // se nao informado usarei o nosso numero
                 /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
                 'carteira_banco' => $boleto->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
-                'cod_carteira' => "I", // I para a maioria ddas carteiras do itau
+                'cod_carteira' => $dados->codigo_carteira, // I para a maioria ddas carteiras do itau
                 /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
                 'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
                 'valor' => $boleto->valor, // Valor do boleto como float valido em php
                 'emissao_boleto' => 2, // tipo de emissao do boleto informar 2 para emissao pelo beneficiario e 1 para emissao pelo banco
                 'protestar' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias
-                'nome_pagador' => "JOSÉ da SILVA ALVES", // O Pagador é o cliente, preste atenção nos campos abaixo
-                'tipo_inscricao' => 1, //campo fixo, escreva '1' se for pessoa fisica, 2 se for pessoa juridica
-                'numero_inscricao' => '123.122.123-56', //cpf ou ncpj do pagador
-                'endereco_pagador' => 'Rua dos developers,123 sl 103',
-                'bairro_pagador' => 'Bairro da insonia',
-                'cep_pagador' => '12345-123', // com hífem
-                'cidade_pagador' => 'Londrina',
-                'uf_pagador' => 'PR',
-                'data_vencimento' => '2016-04-09', // informar a data neste formato
-                'data_emissao' => '2016-04-09', // informar a data neste formato
-                'vlr_juros' => 0.15, // Valor do juros de 1 dia'
-                'data_desconto' => '2016-04-09', // informar a data neste formato
-                'vlr_desconto' => '0', // Valor do desconto
-                'prazo' => 5, // prazo de dias para o cliente pagar após o vencimento
-                'mensagem' => 'JUROS de R$0,15 ao dia'.PHP_EOL."Não receber apos 30 dias",
-                'email_pagador' => 'rogerio@ciatec.net', // data da multa
-                'data_multa' => '2016-04-09', // informar a data neste formato, // data da multa
-                'valor_multa' => 30.00, // valor da multa
+                'nome_pagador' => $boleto->nome_pagador, // O Pagador é o cliente, preste atenção nos campos abaixo
+                'tipo_inscricao' => $boleto->tipo_pagador, //campo fixo, escreva '1' se for pessoa fisica, 2 se for pessoa juridica
+                'numero_inscricao' => $boleto->cpf_cnpj, //cpf ou ncpj do pagador
+                'endereco_pagador' => $boleto->endereco_pagador,
+                'bairro_pagador' => $boleto->bairro_pagador,
+                'cep_pagador' => $boleto->cep_pagador, // com hífem
+                'cidade_pagador' => $boleto->cidade_pagador,
+                'uf_pagador' => $boleto->uf_pagador,
+                'data_vencimento' => $boleto->data_vencimento, // informar a data neste formato
+                'data_emissao' => $boleto->data_emissao, // informar a data neste formato
+                'vlr_juros' => $boleto->vlr_juros, // Valor do juros de 1 dia'
+                'data_desconto' => $boleto->data_desconto, // informar a data neste formato
+                'vlr_desconto' => $boleto->vlr_desconto, // Valor do desconto
+                'prazo' => $boleto->prazo, // prazo de dias para o cliente pagar após o vencimento
+                'mensagem' => $boleto->mensagem,
+                'email_pagador' => $boleto->email_pagador, // data da multa
+                'data_multa' => $boleto->data_multa, // informar a data neste formato, // data da multa
+                'valor_multa' => $boleto->valor_multa, // valor da multa
             ));
         }
 //        header("Content-type: text/plain");
@@ -89,38 +89,39 @@ final class RemessaController
         ));
         $lote              = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobrança registrada, 2 para sem registro
 
-        $lote->inserirDetalhe(array(
-            'codigo_ocorrencia' => 1, //1 = Entrada de título, para outras opçoes ver nota explicativa C004 manual Cnab_SIGCB na pasta docs
-            'nosso_numero' => $dados->nosso_numero, // numero sequencial de boleto
-            'seu_numero' => 1, // se nao informado usarei o nosso numero 
-
-            /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
-            'carteira_banco' => $dados->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
-            'cod_carteira' => "I", // I para a maioria ddas carteiras do itau
-            /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
-            'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
-            'valor' => 100.00, // Valor do boleto como float valido em php
-            'emissao_boleto' => 2, // tipo de emissao do boleto informar 2 para emissao pelo beneficiario e 1 para emissao pelo banco
-            'protestar' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias
-            'nome_pagador' => "JOSÉ da SILVA ALVES", // O Pagador é o cliente, preste atenção nos campos abaixo
-            'tipo_inscricao' => 1, //campo fixo, escreva '1' se for pessoa fisica, 2 se for pessoa juridica
-            'numero_inscricao' => '123.122.123-56', //cpf ou ncpj do pagador
-            'endereco_pagador' => 'Rua dos developers,123 sl 103',
-            'bairro_pagador' => 'Bairro da insonia',
-            'cep_pagador' => '12345-123', // com hífem
-            'cidade_pagador' => 'Londrina',
-            'uf_pagador' => 'PR',
-            'data_vencimento' => '2016-04-09', // informar a data neste formato
-            'data_emissao' => '2016-04-09', // informar a data neste formato
-            'vlr_juros' => 0.15, // Valor do juros de 1 dia'
-            'data_desconto' => '2016-04-09', // informar a data neste formato
-            'vlr_desconto' => '0', // Valor do desconto
-            'prazo' => 5, // prazo de dias para o cliente pagar após o vencimento
-            'mensagem' => 'JUROS de R$0,15 ao dia'.PHP_EOL."Não receber apos 30 dias",
-            'email_pagador' => 'rogerio@ciatec.net', // data da multa
-            'data_multa' => '2016-04-09', // informar a data neste formato, // data da multa
-            'valor_multa' => 30.00, // valor da multa
-        ));
+        foreach ($dados->detalhes as $boleto) {
+            $lote->inserirDetalhe(array(
+                'codigo_ocorrencia' => 1, //1 = Entrada de título, para outras opçoes ver nota explicativa C004 manual Cnab_SIGCB na pasta docs
+                'nosso_numero' => $boleto->nosso_numero, // numero sequencial de boleto
+                'seu_numero' => '', // se nao informado usarei o nosso numero
+                /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
+                'carteira_banco' => $boleto->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
+                'cod_carteira' => $dados->codigo_carteira, // I para a maioria ddas carteiras do itau
+                /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
+                'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
+                'valor' => $boleto->valor, // Valor do boleto como float valido em php
+                'emissao_boleto' => 2, // tipo de emissao do boleto informar 2 para emissao pelo beneficiario e 1 para emissao pelo banco
+                'protestar' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias
+                'nome_pagador' => $boleto->nome_pagador, // O Pagador é o cliente, preste atenção nos campos abaixo
+                'tipo_inscricao' => $boleto->tipo_pagador, //campo fixo, escreva '1' se for pessoa fisica, 2 se for pessoa juridica
+                'numero_inscricao' => $boleto->cpf_cnpj, //cpf ou ncpj do pagador
+                'endereco_pagador' => $boleto->endereco_pagador,
+                'bairro_pagador' => $boleto->bairro_pagador,
+                'cep_pagador' => $boleto->cep_pagador, // com hífem
+                'cidade_pagador' => $boleto->cidade_pagador,
+                'uf_pagador' => $boleto->uf_pagador,
+                'data_vencimento' => $boleto->data_vencimento, // informar a data neste formato
+                'data_emissao' => $boleto->data_emissao, // informar a data neste formato
+                'vlr_juros' => $boleto->vlr_juros, // Valor do juros de 1 dia'
+                'data_desconto' => $boleto->data_desconto, // informar a data neste formato
+                'vlr_desconto' => $boleto->vlr_desconto, // Valor do desconto
+                'prazo' => $boleto->prazo, // prazo de dias para o cliente pagar após o vencimento
+                'mensagem' => $boleto->mensagem,
+                'email_pagador' => $boleto->email_pagador, // data da multa
+                'data_multa' => $boleto->data_multa, // informar a data neste formato, // data da multa
+                'valor_multa' => $boleto->valor_multa, // valor da multa
+            ));
+        }
 
         header("Content-type: text/plain");
         header("Content-Disposition: attachment; filename=remessa-caixa.txt");
@@ -227,43 +228,39 @@ final class RemessaController
         ));
         $lote    = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobran�a registrada, 2 para sem registro
 
-        $lote->inserirDetalhe(array(
-            'codigo_ocorrencia' => 1, //1 = Entrada de título, para outras opções ver nota explicativa C004 manual Cnab_SIGCB na pasta docs
-            'nosso_numero' => 50, // numero sequencial de boleto
-            'seu_numero' => 43, // se nao informado usarei o nosso numero 
-
-            /* campos necessarios somente para itau e siccob,  não precisa comentar se for outro layout    */
-            'carteira_banco' => 109, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
-            'cod_carteira' => "01", // I para a maioria ddas carteiras do itau
-            /* campos necessarios somente para itau,  não precisa comentar se for outro layout    */
-            'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
-            'valor' => 100.00, // Valor do boleto como float valido em php
-            'emissao_boleto' => 2, // tipo de emissao do boleto informar 2 para emissao pelo beneficiario e 1 para emissao pelo banco
-            'protestar' => 3, // 1 = Protestar com (Prazo) dias, 3 = Devolver ap�s (Prazo) dias
-            'prazo_protesto' => 5, // Informar o numero de dias apos o vencimento para iniciar o protesto
-            'nome_pagador' => "JOSÉ da SILVA ALVES", // O Pagador � o cliente, preste atenção nos campos abaixo
-            'tipo_inscricao' => 1, //campo fixo, escreva '1' se for pessoa fisica, 2 se for pessoa juridica
-            'numero_inscricao' => '123.122.123-56', //cpf ou ncpj do pagador
-            'endereco_pagador' => 'Rua dos developers,123 sl 103',
-            'bairro_pagador' => 'Bairro da insonia',
-            'cep_pagador' => '12345-123', // com h�fem
-            'cidade_pagador' => 'Londrina',
-            'uf_pagador' => 'PR',
-            'data_vencimento' => '2016-04-09', // informar a data neste formato
-            'data_emissao' => '2016-04-09', // informar a data neste formato
-            'vlr_juros' => 0.15, // Valor do juros de 1 dia'
-            'data_desconto' => '2016-04-09', // informar a data neste formato
-            'vlr_desconto' => '0', // Valor do desconto
-            'baixar' => 2, // codigo para indicar o tipo de baixa '1' (Baixar/ Devolver) ou '2' (N�o Baixar / N�o Devolver)
-            'prazo_baixa' => 90, // prazo de dias para o cliente pagar ap�s o vencimento
-            'mensagem' => 'JUROS de R$0,15 ao dia'.PHP_EOL."Não receber apos 30 dias",
-            'email_pagador' => 'rogerio@ciatec.net', // data da multa
-            'data_multa' => '2016-04-09', // informar a data neste formato, // data da multa
-            'vlr_multa' => 30.00, // valor da multa
-            // campos necessários somente para o sicoob
-            'taxa_multa' => 30.00, // taxa de multa em percentual
-            'taxa_juros' => 30.00, // taxa de juros em percentual
-        ));
+        foreach ($dados->detalhes as $boleto) {
+            $lote->inserirDetalhe(array(
+                'codigo_ocorrencia' => 1, //1 = Entrada de título, para outras opçoes ver nota explicativa C004 manual Cnab_SIGCB na pasta docs
+                'nosso_numero' => $boleto->nosso_numero, // numero sequencial de boleto
+                'seu_numero' => '', // se nao informado usarei o nosso numero
+                /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
+                'carteira_banco' => $boleto->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
+                'cod_carteira' => $dados->codigo_carteira, // I para a maioria ddas carteiras do itau
+                /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
+                'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
+                'valor' => $boleto->valor, // Valor do boleto como float valido em php
+                'emissao_boleto' => 2, // tipo de emissao do boleto informar 2 para emissao pelo beneficiario e 1 para emissao pelo banco
+                'protestar' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias
+                'nome_pagador' => $boleto->nome_pagador, // O Pagador é o cliente, preste atenção nos campos abaixo
+                'tipo_inscricao' => $boleto->tipo_pagador, //campo fixo, escreva '1' se for pessoa fisica, 2 se for pessoa juridica
+                'numero_inscricao' => $boleto->cpf_cnpj, //cpf ou ncpj do pagador
+                'endereco_pagador' => $boleto->endereco_pagador,
+                'bairro_pagador' => $boleto->bairro_pagador,
+                'cep_pagador' => $boleto->cep_pagador, // com hífem
+                'cidade_pagador' => $boleto->cidade_pagador,
+                'uf_pagador' => $boleto->uf_pagador,
+                'data_vencimento' => $boleto->data_vencimento, // informar a data neste formato
+                'data_emissao' => $boleto->data_emissao, // informar a data neste formato
+                'vlr_juros' => $boleto->vlr_juros, // Valor do juros de 1 dia'
+                'data_desconto' => $boleto->data_desconto, // informar a data neste formato
+                'vlr_desconto' => $boleto->vlr_desconto, // Valor do desconto
+                'prazo' => $boleto->prazo, // prazo de dias para o cliente pagar após o vencimento
+                'mensagem' => $boleto->mensagem,
+                'email_pagador' => $boleto->email_pagador, // data da multa
+                'data_multa' => $boleto->data_multa, // informar a data neste formato, // data da multa
+                'valor_multa' => $boleto->valor_multa, // valor da multa
+            ));
+        }
         $arquivo->save('remessa-sicoob.txt');
         header("Content-type: text/plain");
         header("Content-Disposition: attachment; filename=remessa-sicoob.txt");
