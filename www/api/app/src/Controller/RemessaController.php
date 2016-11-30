@@ -5,10 +5,13 @@ namespace App\Controller;
 use \CnabPHP\Remessa;
 use \CnabPHP\Retorno;
 
-final class RemessaController {
+final class RemessaController
+{
 
-    function geraItau($dados) {
-        $arquivo = new Remessa(341, 'Cnab400', array(
+    function geraItau($dados)
+    {
+        $arquivo = new Remessa(341, 'Cnab400',
+            array(
             'nome_empresa' => "Empresa ABC", // seu nome de empresa
             'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj 
             'numero_inscricao' => '12345678901234', // seu cpf ou cnpj completo
@@ -19,7 +22,7 @@ final class RemessaController {
             'codigo_beneficiario' => '123456', // codigo fornecido pelo banco
             'numero_sequencial_arquivo' => $dados->nosso_numero, // sequencial do arquivo um numero novo para cada arquivo gerado
         ));
-        $lote = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobrança registrada, 2 para sem registro
+        $lote    = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobrança registrada, 2 para sem registro
 
         $lote->inserirDetalhe(array(
             'codigo_ocorrencia' => 1, //1 = Entrada de título, para outras opçoes ver nota explicativa C004 manual Cnab_SIGCB na pasta docs
@@ -48,19 +51,21 @@ final class RemessaController {
             'data_desconto' => '2016-04-09', // informar a data neste formato
             'vlr_desconto' => '0', // Valor do desconto
             'prazo' => 5, // prazo de dias para o cliente pagar após o vencimento
-            'mensagem' => 'JUROS de R$0,15 ao dia' . PHP_EOL . "Não receber apos 30 dias",
+            'mensagem' => 'JUROS de R$0,15 ao dia'.PHP_EOL."Não receber apos 30 dias",
             'email_pagador' => 'rogerio@ciatec.net', // data da multa
             'data_multa' => '2016-04-09', // informar a data neste formato, // data da multa
             'valor_multa' => 30.00, // valor da multa
         ));
-        
+
         header("Content-type: text/plain");
         header("Content-Disposition: attachment; filename=remessa.txt");
         print $arquivo->getText();
     }
 
-    function geraCaixa($dados) {
-        $arquivo = new Remessa(104, 'cnab240_SIGCB', array(
+    function geraCaixa($dados)
+    {
+        $arquivo = new Remessa(104, 'cnab240_SIGCB',
+            array(
             'nome_empresa' => "Empresa ABC", // seu nome de empresa
             'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj 
             'numero_inscricao' => '12345678901234', // seu cpf ou cnpj completo
@@ -71,8 +76,8 @@ final class RemessaController {
             'codigo_beneficiario' => '123456', // codigo fornecido pelo banco
             'numero_sequencial_arquivo' => $dados->nosso_numero, // sequencial do arquivo um numero novo para cada arquivo gerado
         ));
-        $lote = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobrança registrada, 2 para sem registro
- 
+        $lote    = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobrança registrada, 2 para sem registro
+
         $lote->inserirDetalhe(array(
             'codigo_ocorrencia' => 1, //1 = Entrada de título, para outras opçoes ver nota explicativa C004 manual Cnab_SIGCB na pasta docs
             'nosso_numero' => $dados->nosso_numero, // numero sequencial de boleto
@@ -83,7 +88,7 @@ final class RemessaController {
             'cod_carteira' => "I", // I para a maioria ddas carteiras do itau
             /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
             'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
-            'valor' =>100.00, // Valor do boleto como float valido em php
+            'valor' => 100.00, // Valor do boleto como float valido em php
             'emissao_boleto' => 2, // tipo de emissao do boleto informar 2 para emissao pelo beneficiario e 1 para emissao pelo banco
             'protestar' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias
             'nome_pagador' => "JOSÉ da SILVA ALVES", // O Pagador é o cliente, preste atenção nos campos abaixo
@@ -100,20 +105,21 @@ final class RemessaController {
             'data_desconto' => '2016-04-09', // informar a data neste formato
             'vlr_desconto' => '0', // Valor do desconto
             'prazo' => 5, // prazo de dias para o cliente pagar após o vencimento
-            'mensagem' => 'JUROS de R$0,15 ao dia' . PHP_EOL . "Não receber apos 30 dias",
+            'mensagem' => 'JUROS de R$0,15 ao dia'.PHP_EOL."Não receber apos 30 dias",
             'email_pagador' => 'rogerio@ciatec.net', // data da multa
             'data_multa' => '2016-04-09', // informar a data neste formato, // data da multa
             'valor_multa' => 30.00, // valor da multa
         ));
-        
+
         header("Content-type: text/plain");
         header("Content-Disposition: attachment; filename=remessa-caixa.txt");
         print $arquivo->getText();
     }
 
-    function geraBB($dados) {
+    function geraBB($dados)
+    {
         $codigo_banco = \Cnab\Banco::BANCO_DO_BRASIL;
-        $arquivo = new \Cnab\Remessa\Cnab240\Arquivo($codigo_banco);
+        $arquivo      = new \Cnab\Remessa\Cnab240\Arquivo($codigo_banco);
         $arquivo->configure(array(
             'data_geracao' => new \DateTime(),
             'data_gravacao' => new \DateTime(),
@@ -134,38 +140,38 @@ final class RemessaController {
             'agencia_dv' => $dados->agencia_dv,
             'conta' => $dados->conta, // número da conta
             'conta_dv' => $dados->conta_dv, // digito da conta
-            'operacao' =>  1,
+            'operacao' => 1,
             'numero_sequencial_arquivo' => '1',
         ));
 
-        foreach($dados->detalhes as $detalhe){
-        $arquivo->insertDetalhe(array(
-            'codigo_ocorrencia' => 1, // 1 = Entrada de título, futuramente poderemos ter uma constante
-            'nosso_numero' => '12345',
-            'numero_documento' => '12345',
-            'especie' => \Cnab\Especie::BB_DUPLICATA_MERCANTIL, // Você pode consultar as especies Cnab\Especie
-            'valor' => 100.39, // Valor do boleto
-            'instrucao1' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias, futuramente poderemos ter uma constante
-            'instrucao2' => 0, // preenchido com zeros
-            'sacado_nome' => 'Nome do cliente', // O Sacado é o cliente, preste atenção nos campos abaixo
-            'sacado_tipo' => 'cpf', //campo fixo, escreva 'cpf' (sim as letras cpf) se for pessoa fisica, cnpj se for pessoa juridica
-            'sacado_cpf' => '111.111.111-11',
-            'sacado_logradouro' => 'Logradouro do cliente',
-            'sacado_bairro' => 'Bairro do cliente',
-            'sacado_cep' => '11111222', // sem hífem
-            'sacado_cidade' => 'Cidade do cliente',
-            'sacado_uf' => 'SP',
-            'data_vencimento' => new \DateTime('2014-06-08'),
-            'data_cadastro' => new \DateTime('2014-06-01'),
-            'juros_de_um_dia' => 0.10, // Valor do juros de 1 dia'
-            'data_desconto' => new \DateTime('2014-06-01'),
-            'valor_desconto' => 10.0, // Valor do desconto
-            'prazo' => 10, // prazo de dias para o cliente pagar após o vencimento
-            'taxa_de_permanencia' => '0', //00 = Acata Comissão por Dia (recomendável), 51 Acata Condições de Cadastramento na CAIXA
-            'mensagem' => 'Descrição do boleto',
-            'data_multa' => new \DateTime('2014-06-09'), // data da multa
-            'valor_multa' => 10.0, // valor da multa
-        ));
+        foreach ($dados->detalhes as $detalhe) {
+            $arquivo->insertDetalhe(array(
+                'codigo_ocorrencia' => 1, // 1 = Entrada de título, futuramente poderemos ter uma constante
+                'nosso_numero' => '12345',
+                'numero_documento' => '12345',
+                'especie' => \Cnab\Especie::BB_DUPLICATA_MERCANTIL, // Você pode consultar as especies Cnab\Especie
+                'valor' => 100.39, // Valor do boleto
+                'instrucao1' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias, futuramente poderemos ter uma constante
+                'instrucao2' => 0, // preenchido com zeros
+                'sacado_nome' => 'Nome do cliente', // O Sacado é o cliente, preste atenção nos campos abaixo
+                'sacado_tipo' => 'cpf', //campo fixo, escreva 'cpf' (sim as letras cpf) se for pessoa fisica, cnpj se for pessoa juridica
+                'sacado_cpf' => '111.111.111-11',
+                'sacado_logradouro' => 'Logradouro do cliente',
+                'sacado_bairro' => 'Bairro do cliente',
+                'sacado_cep' => '11111222', // sem hífem
+                'sacado_cidade' => 'Cidade do cliente',
+                'sacado_uf' => 'SP',
+                'data_vencimento' => new \DateTime('2014-06-08'),
+                'data_cadastro' => new \DateTime('2014-06-01'),
+                'juros_de_um_dia' => 0.10, // Valor do juros de 1 dia'
+                'data_desconto' => new \DateTime('2014-06-01'),
+                'valor_desconto' => 10.0, // Valor do desconto
+                'prazo' => 10, // prazo de dias para o cliente pagar após o vencimento
+                'taxa_de_permanencia' => '0', //00 = Acata Comissão por Dia (recomendável), 51 Acata Condições de Cadastramento na CAIXA
+                'mensagem' => 'Descrição do boleto',
+                'data_multa' => new \DateTime('2014-06-09'), // data da multa
+                'valor_multa' => 10.0, // valor da multa
+            ));
         }
 
         $arquivo->save('remessa-bb.txt');
@@ -178,20 +184,24 @@ final class RemessaController {
      * Todo - Santander
      * @param type $dados
      */
-    function geraSantander($dados) {
+    function geraSantander($dados)
+    {
         echo "TODO";
     }
-    
+
     /**
      * Todo - Bradesco
      * @param type $dados
      */
-    function geraBradesco($dados) {
+    function geraBradesco($dados)
+    {
         echo "TODO";
     }
 
-    function geraSicoob($dados) {
-        $arquivo = new Remessa(756, 'cnab400', array(
+    function geraSicoob($dados)
+    {
+        $arquivo = new Remessa(756, 'cnab400',
+            array(
             'nome_empresa' => $dados->nome_fantasia, // seu nome de empresa
             'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj 
             'numero_inscricao' => '123.122.123-56', // seu cpf ou cnpj completo
@@ -204,7 +214,7 @@ final class RemessaController {
             'numero_sequencial_arquivo' => 1,
             'situacao_arquivo' => 'P' // use T para teste e P para produ��o
         ));
-        $lote = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobran�a registrada, 2 para sem registro
+        $lote    = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobran�a registrada, 2 para sem registro
 
         $lote->inserirDetalhe(array(
             'codigo_ocorrencia' => 1, //1 = Entrada de título, para outras opções ver nota explicativa C004 manual Cnab_SIGCB na pasta docs
@@ -235,7 +245,7 @@ final class RemessaController {
             'vlr_desconto' => '0', // Valor do desconto
             'baixar' => 2, // codigo para indicar o tipo de baixa '1' (Baixar/ Devolver) ou '2' (N�o Baixar / N�o Devolver)
             'prazo_baixa' => 90, // prazo de dias para o cliente pagar ap�s o vencimento
-            'mensagem' => 'JUROS de R$0,15 ao dia' . PHP_EOL . "Não receber apos 30 dias",
+            'mensagem' => 'JUROS de R$0,15 ao dia'.PHP_EOL."Não receber apos 30 dias",
             'email_pagador' => 'rogerio@ciatec.net', // data da multa
             'data_multa' => '2016-04-09', // informar a data neste formato, // data da multa
             'vlr_multa' => 30.00, // valor da multa
@@ -248,5 +258,4 @@ final class RemessaController {
         header("Content-Disposition: attachment; filename=remessa-sicoob.txt");
         print $arquivo->getText();
     }
-
 }
