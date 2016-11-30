@@ -60,7 +60,7 @@ final class RemessaAction {
     }
 
     function geraCaixa($dados) {
-        $arquivo = new Remessa(104, 'Cnab240_SIGCB', array(
+        $arquivo = new Remessa(104, 'cnab240_SIGCB', array(
             'nome_empresa' => "Empresa ABC", // seu nome de empresa
             'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj 
             'numero_inscricao' => '12345678901234', // seu cpf ou cnpj completo
@@ -83,7 +83,7 @@ final class RemessaAction {
             'cod_carteira' => "I", // I para a maioria ddas carteiras do itau
             /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
             'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
-            'valor' => $dados->valor, // Valor do boleto como float valido em php
+            'valor' =>100.00, // Valor do boleto como float valido em php
             'emissao_boleto' => 2, // tipo de emissao do boleto informar 2 para emissao pelo beneficiario e 1 para emissao pelo banco
             'protestar' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias
             'nome_pagador' => "JOSÉ da SILVA ALVES", // O Pagador é o cliente, preste atenção nos campos abaixo
