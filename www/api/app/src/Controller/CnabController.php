@@ -7,11 +7,12 @@ use Slim\Http\Response;
 use \CnabPHP\Remessa;
 use \CnabPHP\Retorno;
 
-final class CnabController extends BaseController {
-
+final class CnabController extends BaseController
+{
     private $remessa_controller;
 
-    function __construct(\Slim\Container $c) {
+    function __construct(\Slim\Container $c)
+    {
         parent::__construct($c);
 
         $this->remessa_controller = $c->get('remessa');
@@ -23,7 +24,8 @@ final class CnabController extends BaseController {
      * @param Response $response
      * @param type $args
      */
-    public function geraRemessa(Request $request, Response $response, $args) {
+    public function geraRemessa(Request $request, Response $response, $args)
+    {
 
         $dados = $request->getBody();
         $dados = json_decode($dados);
@@ -51,9 +53,9 @@ final class CnabController extends BaseController {
                 echo "Você deve passar o código do banco como parâmetro";
         }
 
-            $remessa = array('nosso_numero' => $dados->nosso_numero, 'carteira' => $dados->carteira, 'valor' => $dados->valor, 'criado' => new \MongoDate());
-            $this->mongodb->remessas->insert($remessa);
-            
+        $remessa = array('nosso_numero' => $dados->nosso_numero, 'carteira' => $dados->carteira,
+            'valor' => $dados->valor, 'criado' => new \MongoDate());
+        $this->mongodb->remessas->insert($remessa);
     }
 
     /**
@@ -62,7 +64,8 @@ final class CnabController extends BaseController {
      * @param Response $response
      * @param type $args
      */
-    public function processaRetorno(Request $request, Response $response, $args) {
+    public function processaRetorno(Request $request, Response $response, $args)
+    {
         $files = $request->getUploadedFiles();
         if (empty($files['newfile'])) {
             $response->withJson('{ "erro" : { "Nenhum arquivo enviado"} }');
@@ -70,18 +73,19 @@ final class CnabController extends BaseController {
             return $response;
         }
 
-        $arquivo = $files['newfile'];
+        $arquivo     = $files['newfile'];
         //$arquivo = $request->getParam('arquivo'); //Pega caminho do arquivo enviado por parâmetro
         $fileContent = file_get_contents($arquivo); //Pega dados do arquivo de retorno
-        $arquivo = new Retorno($fileContent); //Processa retorno
-        $registros = $arquivo->getRegistros(); //Peg registros
+        $arquivo     = new Retorno($fileContent); //Processa retorno
+        $registros   = $arquivo->getRegistros(); //Peg registros
         foreach ($registros as $registro) {
             //Pra cada registro, fazemos a inclusão se foi pago
             if ($registro->codigo_movimento == 6) {
-                $retorno = array('nosso_numero' => $registro->nosso_numero, 'carteira' => $registro->carteira, 'valor_recebido' => $registro->vlr_pago, 'data_pagamento' => $registro->data_ocorrencia, 'processado' => new \MongoDate());
+                $retorno = array('nosso_numero' => $registro->nosso_numero, 'carteira' => $registro->carteira,
+                    'valor_recebido' => $registro->vlr_pago, 'data_pagamento' => $registro->data_ocorrencia,
+                    'processado' => new \MongoDate());
                 $this->mongodb->retornos->insert($retorno);
             }
         }
     }
-
 }

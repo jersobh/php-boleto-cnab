@@ -5,45 +5,44 @@ namespace App\Controller;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-final class SetupController extends BaseController {
+final class SetupController extends BaseController
+{
 
-    public function setup() {
-        
-        try{
+    public function setup()
+    {
+
+        try {
             $this->mongodb->command(array(
-            "create" => 'users',
-            "autoIndexId" => true,
-        ));
-        $this->mongodb->command(array(
-            "create" => 'remessas',
-            "autoIndexId" => true,
-        ));
+                "create" => 'users',
+                "autoIndexId" => true,
+            ));
+            $this->mongodb->command(array(
+                "create" => 'remessas',
+                "autoIndexId" => true,
+            ));
 
-        $this->mongodb->command(array(
-            "create" => 'retornos',
-            "autoIndexId" => true,
-        ));
+            $this->mongodb->command(array(
+                "create" => 'retornos',
+                "autoIndexId" => true,
+            ));
 
-        //Cria um usuário padrão
-        $admin = array('username' => 'admin', 'password' => md5('admin'), 'created' => new \MongoDate());
-        $this->mongodb->users->insert($admin);
-        
-        echo "API instalada com sucesso!";
-        
+            //Cria um usuário padrão
+            $admin = array('username' => 'admin', 'password' => md5('admin'), 'created' => new \MongoDate());
+            $this->mongodb->users->insert($admin);
+
+            echo "API instalada com sucesso!";
         } catch (Exception $ex) {
-            die($ex->getMessage()); 
+            die($ex->getMessage());
         }
-        
-        
     }
 
-    public function clear() {
-        try{
+    public function clear()
+    {
+        try {
             $this->mongodb->users->drop();
             echo "API reiniciada com sucesso!";
         } catch (Exception $ex) {
-            die($ex->getMessage()); 
+            die($ex->getMessage());
         }
     }
-
 }

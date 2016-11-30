@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use Slim\Http\Request;
@@ -13,11 +14,9 @@ class BaseController
 
     public function __construct(Container $c)
     {
-        $this->view = $c->get('view');
-        $this->logger = $c->get('logger');
-        $this->flash = $c->get('flash');
+        $this->view    = $c->get('view');
+        $this->logger  = $c->get('logger');
+        $this->flash   = $c->get('flash');
         $this->mongodb = $c->get('mongodb');
     }
-
-
 }
