@@ -25,7 +25,9 @@ final class CnabAction extends BaseAction {
      */
     public function geraRemessa(Request $request, Response $response, $args) {
 
-        $dados = $request->getParsedBody();
+        $dados = $request->getBody();
+        $dados = json_decode($dados);
+        //var_dump($dados->codigo_banco);die;
         switch ($dados->codigo_banco) {
             case 1:
                 $this->remessa_controller->geraBB($dados);

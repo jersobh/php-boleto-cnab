@@ -173,7 +173,7 @@ final class RemessaAction {
      * @param type $dados
      */
     function geraSantander($dados) {
-        
+        echo "TODO";
     }
     
     /**
@@ -181,7 +181,7 @@ final class RemessaAction {
      * @param type $dados
      */
     function geraBradesco($dados) {
-        
+        echo "TODO";
     }
 
     function geraSicoob($dados) {
