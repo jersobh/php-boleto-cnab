@@ -122,7 +122,7 @@ final class RemessaAction {
             'cnpj' => $dados->cnpj, // seu cnpj completo
             'banco' => $codigo_banco, //código do banco
             'codigo_convenio' => '11',
-            'codigo_carteira' => '11',
+            'codigo_carteira' => $dados->codigo_carteira,
             'variacao_carteira' => 1,
             'logradouro' => $dados->logradouro,
             'numero' => $dados->numero,
