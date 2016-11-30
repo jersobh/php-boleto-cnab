@@ -23,7 +23,7 @@ final class RemessaController
             array(
             'nome_empresa' => $dados->razao_social, // seu nome de empresa
             'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj 
-            'numero_inscricao' => $dados->cnpj, // seu cpf ou cnpj completo
+            'numero_inscricao' => $dados->numero_inscricao, // seu cpf ou cnpj completo
             'agencia' => $dados->agencia, // agencia sem o digito verificador
             'agencia_dv' => $dados->agencia_dv, // somente o digito verificador da agencia
             'conta' => $dados->conta, // número da conta
@@ -40,7 +40,7 @@ final class RemessaController
                 'seu_numero' => '', // se nao informado usarei o nosso numero
                 /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
                 'carteira_banco' => $boleto->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
-                'cod_carteira' => $boleto->codigo_carteira, // I para a maioria ddas carteiras do itau
+                'cod_carteira' => $boleto->cod_carteira, // I para a maioria ddas carteiras do itau
                 /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
                 'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
                 'valor' => $boleto->valor, // Valor do boleto como float valido em php
@@ -79,7 +79,7 @@ final class RemessaController
             array(
             'nome_empresa' => $dados->razao_social, // seu nome de empresa
             'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj
-            'numero_inscricao' => $dados->cnpj, // seu cpf ou cnpj completo
+            'numero_inscricao' => $dados->numero_inscricao, // seu cpf ou cnpj completo
             'agencia' => $dados->agencia, // agencia sem o digito verificador
             'agencia_dv' => $dados->agencia_dv, // somente o digito verificador da agencia
             'conta' => $dados->conta, // número da conta
@@ -96,7 +96,7 @@ final class RemessaController
                 'seu_numero' => '', // se nao informado usarei o nosso numero
                 /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
                 'carteira_banco' => $boleto->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
-                'cod_carteira' => $boleto->codigo_carteira, // I para a maioria ddas carteiras do itau
+                'cod_carteira' => $boleto->cod_carteira, // I para a maioria ddas carteiras do itau
                 /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
                 'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
                 'valor' => $boleto->valor, // Valor do boleto como float valido em php
@@ -138,7 +138,7 @@ final class RemessaController
             'data_gravacao' => new \DateTime(),
             'nome_fantasia' => $dados->nome_fantasia, // seu nome de empresa
             'razao_social' => $dados->razao_social, // sua razão social
-            'cnpj' => $dados->cnpj, // seu cnpj completo
+            'cnpj' => $dados->numero_inscricao, // seu cnpj completo
             'banco' => $codigo_banco, //código do banco
             'codigo_convenio' => 11,
             'codigo_carteira' => $dados->codigo_carteira,
@@ -215,16 +215,19 @@ final class RemessaController
     {
         $registros         = $this->mongodb->remessas->count();
         $numero_sequencial = $registros + 1;
+
+        //var_dump( $dados->taxa_juros);die;
         $arquivo = new Remessa(756, 'cnab400',
             array(
             'nome_empresa' => $dados->razao_social, // seu nome de empresa
             'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj
-            'numero_inscricao' => $dados->cnpj, // seu cpf ou cnpj completo
+            'numero_inscricao' => $dados->numero_inscricao, // seu cpf ou cnpj completo
             'agencia' => $dados->agencia, // agencia sem o digito verificador
             'agencia_dv' => $dados->agencia_dv, // somente o digito verificador da agencia
             'conta' => $dados->conta, // número da conta
             'conta_dv' => $dados->conta_dv, // digito da conta
             'codigo_beneficiario' => $dados->codigo_beneficiario, // codigo fornecido pelo banco
+            'codigo_beneficiario_dv' => $dados->codigo_beneficiario, //somente sicoob
             'numero_sequencial_arquivo' => $numero_sequencial, // sequencial do arquivo um numero novo para cada arquivo gerado
         ));
         $lote    = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobran�a registrada, 2 para sem registro
@@ -236,7 +239,7 @@ final class RemessaController
                 'seu_numero' => '', // se nao informado usarei o nosso numero
                 /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
                 'carteira_banco' => $boleto->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
-                'cod_carteira' => $boleto->codigo_carteira, // I para a maioria ddas carteiras do itau
+                'cod_carteira' => $boleto->cod_carteira, // I para a maioria ddas carteiras do itau
                 /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
                 'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
                 'valor' => $boleto->valor, // Valor do boleto como float valido em php
@@ -253,6 +256,7 @@ final class RemessaController
                 'data_vencimento' => $boleto->data_vencimento, // informar a data neste formato
                 'data_emissao' => $boleto->data_emissao, // informar a data neste formato
                 'vlr_juros' => $boleto->vlr_juros, // Valor do juros de 1 dia'
+                'taxa_juros' => $boleto->taxa_juros,
                 'data_desconto' => $boleto->data_desconto, // informar a data neste formato
                 'vlr_desconto' => $boleto->vlr_desconto, // Valor do desconto
                 'prazo' => $boleto->prazo, // prazo de dias para o cliente pagar após o vencimento
@@ -260,11 +264,10 @@ final class RemessaController
                 'email_pagador' => $boleto->email_pagador, // data da multa
                 'data_multa' => $boleto->data_multa, // informar a data neste formato, // data da multa
                 'valor_multa' => $boleto->valor_multa, // valor da multa
+                'taxa_multa' => $boleto->taxa_multa, //somente sicoob
             ));
         }
-        $arquivo->save('remessa-sicoob.txt');
-        header("Content-type: text/plain");
-        header("Content-Disposition: attachment; filename=remessa-sicoob.txt");
+       
         print $arquivo->getText();
     }
 }
