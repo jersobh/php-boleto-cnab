@@ -22,6 +22,7 @@
         "slim/flash": "^0.1.0",
         "monolog/monolog": "^1.13",
         "rctnet/opencnabphp": "@dev",
-        "tiexpert/ws-boleto-santander": "@dev"
+        "tiexpert/ws-boleto-santander": "@dev",
+        "andersondanilo/cnab_php": "@dev"
     }
 }

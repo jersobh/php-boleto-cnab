@@ -50,3 +50,7 @@ $container['mongodb'] = function ($c) {
 $container[App\Action\HomeAction::class] = function ($c) {
     return new App\Action\HomeAction($c);
 };
+
+$container['remessa'] = function ($c) {
+    return new App\Action\RemessaAction($c);
+};
