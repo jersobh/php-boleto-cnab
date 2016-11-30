@@ -121,7 +121,7 @@ final class RemessaAction {
             'razao_social' => $dados->razao_social, // sua razão social
             'cnpj' => $dados->cnpj, // seu cnpj completo
             'banco' => $codigo_banco, //código do banco
-            'codigo_convenio' => '11',
+            'codigo_convenio' => 11,
             'codigo_carteira' => $dados->codigo_carteira,
             'variacao_carteira' => 1,
             'logradouro' => $dados->logradouro,
@@ -134,7 +134,7 @@ final class RemessaAction {
             'agencia_dv' => $dados->agencia_dv,
             'conta' => $dados->conta, // número da conta
             'conta_dv' => $dados->conta_dv, // digito da conta
-            'operacao' => '001',
+            'operacao' =>  1,
             'numero_sequencial_arquivo' => '1',
         ));
 
