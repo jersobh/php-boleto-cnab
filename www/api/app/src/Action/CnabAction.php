@@ -42,7 +42,7 @@ final class CnabAction extends BaseAction {
                 $this->remessa_controller->geraBradesco($dados);
                 break;
             case 341:
-                $this->remessa_controller->geraSantander($dados);
+                $this->remessa_controller->geraItau($dados);
                 break;
             case 756:
                 $this->remessa_controller->geraSicoob($dados);

@@ -8,7 +8,7 @@ use \CnabPHP\Retorno;
 final class RemessaAction {
 
     function geraItau($dados) {
-        $arquivo = new Remessa(104, 'Cnab400', array(
+        $arquivo = new Remessa(341, 'Cnab400', array(
             'nome_empresa' => "Empresa ABC", // seu nome de empresa
             'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj 
             'numero_inscricao' => '12345678901234', // seu cpf ou cnpj completo
@@ -186,7 +186,7 @@ final class RemessaAction {
 
     function geraSicoob($dados) {
         $arquivo = new Remessa(756, 'cnab400', array(
-            'nome_empresa' => "Empresa ABC", // seu nome de empresa
+            'nome_empresa' => $dados->nome_fantasia, // seu nome de empresa
             'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj 
             'numero_inscricao' => '123.122.123-56', // seu cpf ou cnpj completo
             'agencia' => '3300', // agencia sem o digito verificador 
