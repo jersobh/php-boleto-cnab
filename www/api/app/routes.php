@@ -9,7 +9,7 @@ $app->get('/setup', 'App\Action\SetupAction:setup');
 $app->get('/setup/clear', 'App\Action\SetupAction:clear');
 
 $app->group('/remessa', function () {
-        $this->get('/gerar', 'App\Action\CnabAction:geraRemessa');
+        $this->post('/gerar', 'App\Action\CnabAction:geraRemessa');
     });
     
 $app->group('/retorno', function () {
