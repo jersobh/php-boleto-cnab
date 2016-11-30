@@ -77,15 +77,15 @@ final class RemessaController
         $numero_sequencial = $registros + 1;
         $arquivo           = new Remessa(104, 'cnab240_SIGCB',
             array(
-            'nome_empresa' => "Empresa ABC", // seu nome de empresa
-            'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj 
-            'numero_inscricao' => '12345678901234', // seu cpf ou cnpj completo
-            'agencia' => '1234', // agencia sem o digito verificador 
-            'agencia_dv' => 1, // somente o digito verificador da agencia 
-            'conta' => '12345', // número da conta
-            'conta_dac' => 1, // digito da conta
-            'codigo_beneficiario' => '123456', // codigo fornecido pelo banco
-            'numero_sequencial_arquivo' => $dados->nosso_numero, // sequencial do arquivo um numero novo para cada arquivo gerado
+            'nome_empresa' => $dados->razao_social, // seu nome de empresa
+            'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj
+            'numero_inscricao' => $dados->cnpj, // seu cpf ou cnpj completo
+            'agencia' => $dados->agencia, // agencia sem o digito verificador
+            'agencia_dv' => $dados->agencia_dv, // somente o digito verificador da agencia
+            'conta' => $dados->conta, // número da conta
+            'conta_dv' => $dados->conta_dv, // digito da conta
+            'codigo_beneficiario' => $dados->codigo_beneficiario, // codigo fornecido pelo banco
+            'numero_sequencial_arquivo' => $numero_sequencial, // sequencial do arquivo um numero novo para cada arquivo gerado
         ));
         $lote              = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobrança registrada, 2 para sem registro
 
@@ -96,7 +96,7 @@ final class RemessaController
                 'seu_numero' => '', // se nao informado usarei o nosso numero
                 /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
                 'carteira_banco' => $boleto->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
-                'cod_carteira' => $dados->codigo_carteira, // I para a maioria ddas carteiras do itau
+                'cod_carteira' => $boleto->codigo_carteira, // I para a maioria ddas carteiras do itau
                 /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
                 'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
                 'valor' => $boleto->valor, // Valor do boleto como float valido em php
@@ -130,6 +130,7 @@ final class RemessaController
 
     function geraBB($dados)
     {
+        
         $codigo_banco = \Cnab\Banco::BANCO_DO_BRASIL;
         $arquivo      = new \Cnab\Remessa\Cnab240\Arquivo($codigo_banco);
         $arquivo->configure(array(
@@ -212,19 +213,19 @@ final class RemessaController
 
     function geraSicoob($dados)
     {
+        $registros         = $this->mongodb->remessas->count();
+        $numero_sequencial = $registros + 1;
         $arquivo = new Remessa(756, 'cnab400',
             array(
-            'nome_empresa' => $dados->nome_fantasia, // seu nome de empresa
-            'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj 
-            'numero_inscricao' => '123.122.123-56', // seu cpf ou cnpj completo
-            'agencia' => '3300', // agencia sem o digito verificador 
-            'agencia_dv' => 6, // somente o digito verificador da agencia 
-            'conta' => '3264', // número da conta
-            'conta_dv' => 6, // digito da conta
-            'codigo_beneficiario' => '10668', // codigo fornecido pelo banco
-            'codigo_beneficiario_dv' => '2', // codigo fornecido pelo banco
-            'numero_sequencial_arquivo' => 1,
-            'situacao_arquivo' => 'P' // use T para teste e P para produ��o
+            'nome_empresa' => $dados->razao_social, // seu nome de empresa
+            'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj
+            'numero_inscricao' => $dados->cnpj, // seu cpf ou cnpj completo
+            'agencia' => $dados->agencia, // agencia sem o digito verificador
+            'agencia_dv' => $dados->agencia_dv, // somente o digito verificador da agencia
+            'conta' => $dados->conta, // número da conta
+            'conta_dv' => $dados->conta_dv, // digito da conta
+            'codigo_beneficiario' => $dados->codigo_beneficiario, // codigo fornecido pelo banco
+            'numero_sequencial_arquivo' => $numero_sequencial, // sequencial do arquivo um numero novo para cada arquivo gerado
         ));
         $lote    = $arquivo->addLote(array('tipo_servico' => 1)); // tipo_servico  = 1 para cobran�a registrada, 2 para sem registro
 
@@ -235,7 +236,7 @@ final class RemessaController
                 'seu_numero' => '', // se nao informado usarei o nosso numero
                 /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
                 'carteira_banco' => $boleto->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
-                'cod_carteira' => $dados->codigo_carteira, // I para a maioria ddas carteiras do itau
+                'cod_carteira' => $boleto->codigo_carteira, // I para a maioria ddas carteiras do itau
                 /* campos necessarios somente para itau, não precisa comentar se for outro layout   */
                 'especie_titulo' => "DM", // informar dm e sera convertido para codigo em qualquer laytou conferir em especie.php
                 'valor' => $boleto->valor, // Valor do boleto como float valido em php
