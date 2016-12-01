@@ -130,66 +130,72 @@ final class RemessaController
 
     function geraBB($dados)
     {
-        
-        $codigo_banco = \Cnab\Banco::BANCO_DO_BRASIL;
-        $arquivo      = new \Cnab\Remessa\Cnab240\Arquivo($codigo_banco);
+        $registros         = $this->mongodb->remessas->count();
+        $numero_sequencial = $registros + 1;
+        $codigoBanco = \Cnab\Banco::BANCO_DO_BRASIL;
+        $cnabFactory = new \Cnab\Factory();
+        $arquivo = $cnabFactory->createRemessa($codigoBanco, 'cnab240');
         $arquivo->configure(array(
             'data_geracao' => new \DateTime(),
             'data_gravacao' => new \DateTime(),
-            'nome_fantasia' => $dados->nome_fantasia, // seu nome de empresa
-            'razao_social' => $dados->razao_social, // sua razão social
-            'cnpj' => $dados->numero_inscricao, // seu cnpj completo
-            'banco' => $codigo_banco, //código do banco
-            'codigo_convenio' => 11,
-            'codigo_carteira' => $dados->codigo_carteira,
-            'variacao_carteira' => 1,
+            'nome_fantasia' => $dados->nome_fantasia,
+            'razao_social' => $dados->razao_social,
+            'cnpj' => $dados->numero_inscricao,
+            'banco' => $codigoBanco, //código do banco
             'logradouro' => $dados->logradouro,
             'numero' => $dados->numero,
             'bairro' => $dados->bairro,
             'cidade' => $dados->cidade,
             'uf' => $dados->uf,
             'cep' => $dados->cep,
+            'conta' => $dados->conta,
+            'conta_dv' => $dados->conta_dv,
+            'operacao' => $dados->operacao,
             'agencia' => $dados->agencia,
             'agencia_dv' => $dados->agencia_dv,
-            'conta' => $dados->conta, // número da conta
-            'conta_dv' => $dados->conta_dv, // digito da conta
-            'operacao' => 1,
-            'numero_sequencial_arquivo' => '1',
+            'codigo_convenio' => $dados->codigo_convenio,
+            'codigo_carteira' => $dados->codigo_carteira, // número da carteira
+            'variacao_carteira' => $dados->variacao_carteira,
+            'numero_sequencial_arquivo' => $numero_sequencial,
         ));
-
-        foreach ($dados->detalhes as $detalhe) {
-            $arquivo->insertDetalhe(array(
-                'codigo_ocorrencia' => 1, // 1 = Entrada de título, futuramente poderemos ter uma constante
-                'nosso_numero' => '12345',
-                'numero_documento' => '12345',
-                'especie' => \Cnab\Especie::BB_DUPLICATA_MERCANTIL, // Você pode consultar as especies Cnab\Especie
-                'valor' => 100.39, // Valor do boleto
-                'instrucao1' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias, futuramente poderemos ter uma constante
-                'instrucao2' => 0, // preenchido com zeros
-                'sacado_nome' => 'Nome do cliente', // O Sacado é o cliente, preste atenção nos campos abaixo
-                'sacado_tipo' => 'cpf', //campo fixo, escreva 'cpf' (sim as letras cpf) se for pessoa fisica, cnpj se for pessoa juridica
-                'sacado_cpf' => '111.111.111-11',
-                'sacado_logradouro' => 'Logradouro do cliente',
-                'sacado_bairro' => 'Bairro do cliente',
-                'sacado_cep' => '11111222', // sem hífem
-                'sacado_cidade' => 'Cidade do cliente',
-                'sacado_uf' => 'SP',
-                'data_vencimento' => new \DateTime('2014-06-08'),
-                'data_cadastro' => new \DateTime('2014-06-01'),
-                'juros_de_um_dia' => 0.10, // Valor do juros de 1 dia'
-                'data_desconto' => new \DateTime('2014-06-01'),
-                'valor_desconto' => 10.0, // Valor do desconto
-                'prazo' => 10, // prazo de dias para o cliente pagar após o vencimento
-                'taxa_de_permanencia' => '0', //00 = Acata Comissão por Dia (recomendável), 51 Acata Condições de Cadastramento na CAIXA
-                'mensagem' => 'Descrição do boleto',
-                'data_multa' => new \DateTime('2014-06-09'), // data da multa
-                'valor_multa' => 10.0, // valor da multa
-            ));
+        // você pode adicionar vários boletos em uma remessa
+        foreach ($dados->detalhes as $boleto) {
+        $arquivo->insertDetalhe(array(
+            'codigo_ocorrencia' => 1, // 1 = Entrada de título, futuramente poderemos ter uma constante
+            'nosso_numero' => $boleto->nosso_numero,
+            'numero_documento' => '',
+            'carteira' => $dados->carteira, //11
+            'codigo_carteira' => \Cnab\CodigoCarteira::COBRANCA_SIMPLES,
+            'especie' => \Cnab\Especie::BB_DUPLICATA_MERCANTIL, // Você pode consultar as especies Cnab\Especie::CEF_OUTROS, futuramente poderemos ter uma tabela na documentação
+            'aceite' => 'N', // "S" ou "N"
+            'registrado' => true,
+            'valor' => $dados->valor, // Valor do boleto
+            'instrucao1' => '', // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias, futuramente poderemos ter uma constante
+            'instrucao2' => '', // preenchido com zeros
+            'sacado_razao_social' => $dados->sacado_razao_social, // O Sacado é o cliente, preste atenção nos campos abaixo
+            'sacado_tipo' => $dados->sacado_tipo, //campo fixo, escreva 'cpf' (sim as letras cpf) se for pessoa fisica, cnpj se for pessoa juridica
+            'sacado_cnpj' => $dados->sacado_cnpj,
+            'sacado_logradouro' => $dados->sacado_logradouro,
+            'sacado_bairro' => $dados->sacado_bairro,
+            'sacado_cep' =>  $dados->sacado_cep,
+            'sacado_cidade' => $dados->sacado_cidade,
+            'sacado_uf' => $dados->sacado_uf,
+            'data_vencimento' => $dados->data_vencimento,
+            'data_cadastro' => $dados->data_cadastro,
+            'juros_de_um_dia' => $dados->juros_de_um_dia, // Valor do juros de 1 dia'
+            'data_desconto' => $dados->data_desconto,
+            'valor_desconto' => $dados->valor_desconto, // Valor do desconto
+            'prazo' => $dados->prazo, // prazo de dias para o cliente pagar após o vencimento
+            'taxa_de_permanencia' => '0', //00 = Acata Comissão por Dia (recomendável), 51 Acata Condições de Cadastramento na CAIXA
+            'mensagem' => $dados->mensagem,
+            'data_multa' => $dados->data_multa, // data da multa
+            'valor_multa' => $dados->valor_multa, // valor da multa
+            'baixar_apos_dias' => $dados->baixar_apos_dias,
+            'dias_iniciar_contagem_juros' => $dados->dias_iniciar_contagem_juros,
+        ));
         }
+        
 
-        $arquivo->save('remessa-bb.txt');
-        header("Content-type: text/plain");
-        header("Content-Disposition: attachment; filename=remessa-bb.txt");
         print $arquivo->getText();
     }
 
