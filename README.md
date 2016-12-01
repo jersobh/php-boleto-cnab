@@ -6,6 +6,8 @@ API's para boletos com registro (CNAB 240/CNAB 400), para gerar boletos, arquivo
 ```sh
 $ cd php-boleto-cnab
 $ docker-compose up
+$ cd www/api
+$ composer update
 ```
 ### Tecnologias
 
