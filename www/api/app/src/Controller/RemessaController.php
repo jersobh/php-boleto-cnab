@@ -10,19 +10,19 @@ final class RemessaController
 {
     protected $mongodb;
 
-    function __construct(Container $c)
+    public function __construct(Container $c)
     {
         $this->mongodb = $c->get('mongodb');
     }
 
-    function geraItau($dados)
+    public function geraItau($dados)
     {
         $registros         = $this->mongodb->remessas->count();
         $numero_sequencial = $registros + 1;
         $arquivo           = new Remessa(341, 'cnab400',
             array(
             'nome_empresa' => $dados->razao_social, // seu nome de empresa
-            'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj 
+            'tipo_inscricao' => 2, // 1 para cpf, 2 cnpj
             'numero_inscricao' => $dados->numero_inscricao, // seu cpf ou cnpj completo
             'agencia' => $dados->agencia, // agencia sem o digito verificador
             'agencia_dv' => $dados->agencia_dv, // somente o digito verificador da agencia
@@ -71,7 +71,7 @@ final class RemessaController
         print $arquivo->getText();
     }
 
-    function geraCaixa($dados)
+    public function geraCaixa($dados)
     {
         $registros         = $this->mongodb->remessas->count();
         $numero_sequencial = $registros + 1;
@@ -128,7 +128,7 @@ final class RemessaController
         print $arquivo->getText();
     }
 
-    function geraBB($dados)
+    public function geraBB($dados)
     {
         $registros         = $this->mongodb->remessas->count();
         $numero_sequencial = $registros + 1;
@@ -194,7 +194,7 @@ final class RemessaController
             'dias_iniciar_contagem_juros' => $dados->dias_iniciar_contagem_juros,
         ));
         }
-        
+
 
         print $arquivo->getText();
     }
@@ -203,7 +203,7 @@ final class RemessaController
      * Todo - Santander
      * @param type $dados
      */
-    function geraSantander($dados)
+    public function geraSantander($dados)
     {
         echo "TODO";
     }
@@ -212,12 +212,12 @@ final class RemessaController
      * Todo - Bradesco
      * @param type $dados
      */
-    function geraBradesco($dados)
+    public function geraBradesco($dados)
     {
         echo "TODO";
     }
 
-    function geraSicoob($dados)
+    public function geraSicoob($dados)
     {
         $registros         = $this->mongodb->remessas->count();
         $numero_sequencial = $registros + 1;
@@ -273,7 +273,7 @@ final class RemessaController
                 'taxa_multa' => $boleto->taxa_multa, //somente sicoob
             ));
         }
-       
+
         print $arquivo->getText();
     }
 }

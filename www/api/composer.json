@@ -30,6 +30,8 @@
         "monolog/monolog": "^1.13",
         "rctnet/opencnabphp": "@dev",
         "tiexpert/ws-boleto-santander": "@dev",
-        "andersondanilo/cnab_php": "@dev"
-    }
+        "andersondanilo/cnab_php": "@dev",
+        "cobregratis/boletophp": "dev-2.x-dev"
+    },
+    "minimum-stability": "dev"
 }
