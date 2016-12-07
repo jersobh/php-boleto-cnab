@@ -4,12 +4,12 @@ namespace App\Controller;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use BoletoPHP\Boletos\Boleto;
-use BoletoPHP\Consts\EspecieDoc,
-    BoletoPHP\Consts\Carteira,
-    BoletoPHP\Consts\Aceite;
-use BoletoPHP\Types\Pagador;
-use BoletoPHP\Types\Beneficiario;
+use \BoletoPHP\Boletos\Boleto;
+use \BoletoPHP\Consts\EspecieDoc,
+    \BoletoPHP\Consts\Carteira,
+    \BoletoPHP\Consts\Aceite;
+use \BoletoPHP\Types\Pagador;
+use \BoletoPHP\Types\Beneficiario;
 
 final class BoletoController extends BaseController
 {
@@ -87,7 +87,7 @@ final class BoletoController extends BaseController
             'pagador_nome' => 'Luiz Fernando Popota',
             'pagador_cpf_cpnpj' => '265.857.562-90'
         );
-        $boleto                       = new BoletoPHP\Boletos\CaixaEconomicaFederal($params,
+        $boleto                       = new \BoletoPHP\Boletos\CaixaEconomicaFederal($params,
             $pagador, $beneficiario);
         echo $boleto->gerarBoleto();
     }
