@@ -12,7 +12,7 @@ final class CnabController extends BaseController
     private $remessa_controller;
     private $boleto_controller;
 
-    function __construct(\Slim\Container $c)
+    public function __construct(\Slim\Container $c)
     {
         parent::__construct($c);
 

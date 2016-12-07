@@ -1,0 +1,6 @@
+*DB_Store*
+.IDEA/
+/www/api/log/app.log
+/www/api/vendor/
+/www/api/cache/twig/6b/
+/www/api/composer.lock
