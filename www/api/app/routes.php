@@ -15,3 +15,7 @@ $app->group('/remessa', function () {
 $app->group('/retorno', function () {
     $this->post('/processa', 'App\Controller\CnabController:processaRetorno');
 });
+
+$app->group('/boleto', function () {
+    $this->post('/gerar', 'App\Controller\CnabController:geraBoleto');
+});
