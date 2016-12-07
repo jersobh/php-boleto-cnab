@@ -17,7 +17,7 @@ final class CnabController extends BaseController
         parent::__construct($c);
 
         $this->remessa_controller = $c->get('remessa');
-        $this->boleto_controller = $c->get('boleto');
+        $this->boleto_controller  = $c->get('boleto');
     }
 
     /**
@@ -65,7 +65,7 @@ final class CnabController extends BaseController
 
         $dados = $request->getBody();
         $dados = json_decode($dados);
-        //var_dump($dados->codigo_banco);die;
+        
         switch ($dados->codigo_banco) {
             case 1:
                 $this->boleto_controller->geraBB($dados);
@@ -88,7 +88,6 @@ final class CnabController extends BaseController
             default:
                 echo "Você deve passar o código do banco como parâmetro";
         }
-
     }
 
     /**

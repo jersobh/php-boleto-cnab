@@ -132,9 +132,9 @@ final class RemessaController
     {
         $registros         = $this->mongodb->remessas->count();
         $numero_sequencial = $registros + 1;
-        $codigoBanco = \Cnab\Banco::BANCO_DO_BRASIL;
-        $cnabFactory = new \Cnab\Factory();
-        $arquivo = $cnabFactory->createRemessa($codigoBanco, 'cnab240');
+        $codigoBanco       = \Cnab\Banco::BANCO_DO_BRASIL;
+        $cnabFactory       = new \Cnab\Factory();
+        $arquivo           = $cnabFactory->createRemessa($codigoBanco, 'cnab240');
         $arquivo->configure(array(
             'data_geracao' => new \DateTime(),
             'data_gravacao' => new \DateTime(),
@@ -160,39 +160,40 @@ final class RemessaController
         ));
         // você pode adicionar vários boletos em uma remessa
         foreach ($dados->detalhes as $boleto) {
-        $arquivo->insertDetalhe(array(
-            'codigo_ocorrencia' => 1, // 1 = Entrada de título, futuramente poderemos ter uma constante
-            'nosso_numero' => $boleto->nosso_numero,
-            'numero_documento' => '',
-            'carteira' => $boleto->carteira, //11
-            'codigo_carteira' => \Cnab\CodigoCarteira::COBRANCA_SIMPLES,
-            'especie' => \Cnab\Especie::BB_DUPLICATA_MERCANTIL, // Você pode consultar as especies Cnab\Especie::CEF_OUTROS, futuramente poderemos ter uma tabela na documentação
-            'aceite' => 'N', // "S" ou "N"
-            'registrado' => true,
-            'valor' => $boleto->valor, // Valor do boleto
-            'instrucao1' => '', // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias, futuramente poderemos ter uma constante
-            'instrucao2' => '', // preenchido com zeros
-            'sacado_razao_social' => $dados->sacado_razao_social, // O Sacado é o cliente, preste atenção nos campos abaixo
-            'sacado_tipo' => $dados->sacado_tipo, //campo fixo, escreva 'cpf' (sim as letras cpf) se for pessoa fisica, cnpj se for pessoa juridica
-            'sacado_cnpj' => $dados->sacado_cnpj,
-            'sacado_logradouro' => $dados->sacado_logradouro,
-            'sacado_bairro' => $dados->sacado_bairro,
-            'sacado_cep' =>  $dados->sacado_cep,
-            'sacado_cidade' => $dados->sacado_cidade,
-            'sacado_uf' => $dados->sacado_uf,
-            'data_vencimento' => $dados->data_vencimento,
-            'data_cadastro' => $dados->data_cadastro,
-            'juros_de_um_dia' => $dados->juros_de_um_dia, // Valor do juros de 1 dia'
-            'data_desconto' => $dados->data_desconto,
-            'valor_desconto' => $dados->valor_desconto, // Valor do desconto
-            'prazo' => $dados->prazo, // prazo de dias para o cliente pagar após o vencimento
-            'taxa_de_permanencia' => '0', //00 = Acata Comissão por Dia (recomendável), 51 Acata Condições de Cadastramento na CAIXA
-            'mensagem' => $dados->mensagem,
-            'data_multa' => $dados->data_multa, // data da multa
-            'valor_multa' => $dados->valor_multa, // valor da multa
-            'baixar_apos_dias' => $dados->baixar_apos_dias,
-            'dias_iniciar_contagem_juros' => $dados->dias_iniciar_contagem_juros,
-        ));
+            $arquivo->insertDetalhe(array(
+                'codigo_ocorrencia' => 1, // 1 = Entrada de título, futuramente poderemos ter uma constante
+                'nosso_numero' => $boleto->nosso_numero,
+                'numero_documento' => '',
+                'carteira' => $boleto->carteira, //11
+                'codigo_carteira' => \Cnab\CodigoCarteira::COBRANCA_SIMPLES,
+                'especie' => \Cnab\Especie::BB_DUPLICATA_MERCANTIL, // Você pode consultar as especies Cnab\Especie::CEF_OUTROS, futuramente poderemos ter uma tabela na documentação
+                'aceite' => $boleto->aceite, // "S" ou "N"
+                'registrado' => true,
+                'valor' => $boleto->valor, // Valor do boleto
+                'instrucao1' => 2, // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias, futuramente poderemos ter uma constante
+                'instrucao2' => '00000000', // preenchido com zeros
+                'sacado_razao_social' => $dados->nome_pagador, // O Sacado é o cliente, preste atenção nos campos abaixo
+                'sacado_tipo' => $boleto->tipo_pagador, //campo fixo, escreva 'cpf' (sim as letras cpf) se for pessoa fisica, cnpj se for pessoa juridica
+                'sacado_cnpj' => $boleto->cpf_cnpj,
+                'sacado_cpf' => $boleto->cpf_cnpj,
+                'sacado_logradouro' => $boleto->endereco_pagador,
+                'sacado_bairro' => $boleto->bairro_pagador,
+                'sacado_cep' => $boleto->cep_pagador,
+                'sacado_cidade' => $boleto->cidade_pagador,
+                'sacado_uf' => $boleto->uf_pagador,
+                'data_vencimento' => new \DateTime($boleto->data_vencimento),
+                'data_cadastro' => new \DateTime($boleto->data_cadastro),
+                'juros_de_um_dia' => $boleto->vlr_juros, // Valor do juros de 1 dia'
+                'data_desconto' => new \DateTime($boleto->data_desconto),
+                'valor_desconto' => $boleto->vlr_desconto, // Valor do desconto
+                'prazo' => $boleto->prazo, // prazo de dias para o cliente pagar após o vencimento
+                'taxa_de_permanencia' => '00', //00 = Acata Comissão por Dia (recomendável), 51 Acata Condições de Cadastramento na CAIXA
+                'mensagem' => $boleto->mensagem,
+                'data_multa' => new \DateTime($boleto->data_multa), // data da multa
+                'valor_multa' => $boleto->valor_multa, // valor da multa
+                'baixar_apos_dias' => $boleto->baixar_apos_dias,
+                'dias_iniciar_contagem_juros' => $boleto->dias_iniciar_contagem_juros,
+            ));
         }
 
 
