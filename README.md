@@ -20,7 +20,8 @@ O projeto utiliza HHVM 3.15.3 + MongoDB 3.2
   - POST http://localhost/setup para gerar as collections no MongoDB 
   - POST http://localhost/setup/clear para fazer um reset da API
   - POST http://localhost/remessa/gerar com o json seguindo o padrão abaixo para gerar uma remessa:
- 
+
+Json exemplo: 
 ```json
 {
 	"codigo_banco": 756,
@@ -89,6 +90,86 @@ O projeto utiliza HHVM 3.15.3 + MongoDB 3.2
 	]
 
 
+
+}
+```
+Json exemplo - Banco do Brasil
+```json
+    {
+	"codigo_banco": 1,
+	"razao_social": "EMPRESA LTDA",
+	"nome_fantasia": "EMPRESA LTDA",
+	"numero_inscricao": 1234567890123,
+	"logradouro": "Rua A  somente Banco do Brasil",
+	"numero": "889",
+	"bairro": "Cabral  somente Banco do Brasil",
+	"cidade": "Contagem  somente Banco do Brasil",
+	"uf": "MG",
+	"cep": "3l849-492",
+	"agencia": 1234,
+	"agencia_dv": 2,
+	"conta": 31234,
+	"conta_dv": 3,
+	"codigo_beneficiario": 123456,
+	"codigo_beneficiario_dv": 2,
+	"codigo_convenio": 3,
+	"codigo_carteira": 11,
+	"variacao_carteira": 1,
+	"detalhes": [{
+			"nosso_numero": 1235,
+			"carteira": 11,
+			"aceite": "N",
+			"valor": 100.00,
+			"nome_pagador": "JÃO DO TESTE",
+			"tipo_pagador": 1,
+			"cpf_cnpj": "21.222.333.4444-55",
+			"endereco_pagador": "Rua A",
+			"bairro_pagador": "Bairro B",
+			"cep_pagador": "30774942",
+			"cidade_pagador": "Belo Horizonte",
+			"uf_pagador": "MG",
+			"data_vencimento": "02/12/2016",
+			"data_emissao": "30/11/2016",
+			"data_desconto": "05/12/2016",
+			"vlr_desconto": 2.00,
+			"vlr_juros": 1.15,
+			"taxa_juros": "1%",
+			"prazo": "10",
+			"mensagem": "NÃO ACEITAR APÓS 10 DIAS",
+			"data_multa": "10/12/2016",
+			"valor_multa": "30",
+			"baixar_apos_dias": 10,
+			"dias_iniciar_contagem_juros": 1
+		},
+
+		{
+			"nosso_numero": 1235,
+			"carteira": 11,
+			"aceite": "N",
+			"valor": 100.00,
+			"nome_pagador": "JÃO DO TESTE",
+			"tipo_pagador": 1,
+			"cpf_cnpj": "21.222.333.4444-55",
+			"endereco_pagador": "Rua A",
+			"bairro_pagador": "Bairro B",
+			"cep_pagador": "30774942",
+			"cidade_pagador": "Belo Horizonte",
+			"uf_pagador": "MG",
+			"data_vencimento": "02/12/2016",
+			"data_emissao": "30/11/2016",
+			"data_desconto": "05/12/2016",
+			"vlr_desconto": 2.00,
+			"vlr_juros": 1.15,
+			"taxa_juros": "1%",
+			"prazo": "10",
+			"mensagem": "NÃO ACEITAR APÓS 10 DIAS",
+			"data_multa": "10/12/2016",
+			"valor_multa": "30",
+			"baixar_apos_dias": 10,
+			"dias_iniciar_contagem_juros": 1
+		}
+
+	]
 
 }
 ```
