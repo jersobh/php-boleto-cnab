@@ -56,3 +56,7 @@ $container[App\Controller\HomeController::class] = function ($c) {
 $container['remessa'] = function ($c) {
     return new App\Controller\RemessaController($c);
 };
+
+$container['boleto'] = function ($c) {
+    return new App\Controller\BoletoController($c);
+};

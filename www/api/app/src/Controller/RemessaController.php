@@ -164,12 +164,12 @@ final class RemessaController
             'codigo_ocorrencia' => 1, // 1 = Entrada de título, futuramente poderemos ter uma constante
             'nosso_numero' => $boleto->nosso_numero,
             'numero_documento' => '',
-            'carteira' => $dados->carteira, //11
+            'carteira' => $boleto->carteira, //11
             'codigo_carteira' => \Cnab\CodigoCarteira::COBRANCA_SIMPLES,
             'especie' => \Cnab\Especie::BB_DUPLICATA_MERCANTIL, // Você pode consultar as especies Cnab\Especie::CEF_OUTROS, futuramente poderemos ter uma tabela na documentação
             'aceite' => 'N', // "S" ou "N"
             'registrado' => true,
-            'valor' => $dados->valor, // Valor do boleto
+            'valor' => $boleto->valor, // Valor do boleto
             'instrucao1' => '', // 1 = Protestar com (Prazo) dias, 2 = Devolver após (Prazo) dias, futuramente poderemos ter uma constante
             'instrucao2' => '', // preenchido com zeros
             'sacado_razao_social' => $dados->sacado_razao_social, // O Sacado é o cliente, preste atenção nos campos abaixo

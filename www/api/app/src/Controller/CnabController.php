@@ -10,12 +10,14 @@ use \CnabPHP\Retorno;
 final class CnabController extends BaseController
 {
     private $remessa_controller;
+    private $boleto_controller;
 
     function __construct(\Slim\Container $c)
     {
         parent::__construct($c);
 
         $this->remessa_controller = $c->get('remessa');
+        $this->boleto_controller = $c->get('boleto');
     }
 
     /**
@@ -56,6 +58,37 @@ final class CnabController extends BaseController
         $remessa = array('nosso_numero' => $dados->nosso_numero, 'carteira' => $dados->carteira,
             'valor' => $dados->valor, 'criado' => new \MongoDate());
         $this->mongodb->remessas->insert($remessa);
+    }
+
+    public function geraBoleto(Request $request, Response $response, $args)
+    {
+
+        $dados = $request->getBody();
+        $dados = json_decode($dados);
+        //var_dump($dados->codigo_banco);die;
+        switch ($dados->codigo_banco) {
+            case 1:
+                $this->boleto_controller->geraBB($dados);
+                break;
+            case 33:
+                $this->boleto_controller->geraSantander($dados);
+                break;
+            case 104:
+                $this->boleto_controller->geraCaixa($dados);
+                break;
+            case 237:
+                $this->boleto_controller->geraBradesco($dados);
+                break;
+            case 341:
+                $this->boleto_controller->geraItau($dados);
+                break;
+            case 756:
+                $this->boleto_controller->geraSicoob($dados);
+                break;
+            default:
+                echo "Você deve passar o código do banco como parâmetro";
+        }
+
     }
 
     /**
