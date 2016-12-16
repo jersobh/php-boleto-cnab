@@ -1,0 +1,19 @@
+{
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "jersobh/php-boleto-cnab",
+                "version": "master",
+                "source": {
+                    "url": "https://github.com/jersobh/php-boleto-cnab.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        }
+    ],
+    "require": {
+        "jersobh/php-boleto-cnab": "*"
+    }
+}
