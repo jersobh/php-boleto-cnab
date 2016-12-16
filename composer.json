@@ -15,5 +15,5 @@
     ],
     "require": {
         "jersobh/php-boleto-cnab": "*"
-    }
+    } 
 }
