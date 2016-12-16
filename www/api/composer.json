@@ -1,14 +1,13 @@
 {
-    "name": "akrabat/slim3-skeleton",
-    "description": "Simple Slim Framework 3 skeleton with Twig & Monolog.",
-    "license": "BSD-3-Clause",
+    "name": "jersobh/php-boleto-cnab",
+    "description": "API's para boletos com registro (CNAB 240/CNAB 400), para gerar boletos, arquivos de remessa, processar arquivos de retorno e integrações com webservices.",
     "type": "project",
-    "keywords": ["slim-framework", "skeleton"],
+    "keywords": ["slim-framework", "API", "CNAB", "BOLETO"],
     "authors": [
         {
-            "name": "Rob Allen",
-            "email": "rob@akrabat.com",
-            "homepage": "http://akrabat.com"
+            "name": "Jefferson de Andrade Santos",
+            "email": "jersobh@gmail.com",
+            "homepage": "http://dataforge.com.br"
         }
     ],
     "autoload": {
