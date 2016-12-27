@@ -18,6 +18,17 @@ final class CnabController extends BaseController
 
         $this->remessa_controller = $c->get('remessa');
         $this->boleto_controller  = $c->get('boleto');
+
+//        $this->baseDir = getcwd();
+//        var_dump($this->baseDir);
+//        die;
+//
+//        $file    = 'example.txt';
+//        $newfile = 'example.txt.bak';
+//
+//        if (!copy($file, $newfile)) {
+//            echo "falha ao copiar $file...\n";
+//        }
     }
 
     /**
@@ -65,7 +76,7 @@ final class CnabController extends BaseController
 
         $dados = $request->getBody();
         $dados = json_decode($dados);
-        
+
         switch ($dados->codigo_banco) {
             case 1:
                 $this->boleto_controller->geraBB($dados);
@@ -98,26 +109,36 @@ final class CnabController extends BaseController
      */
     public function processaRetorno(Request $request, Response $response, $args)
     {
-        $files = $request->getUploadedFiles();
-        if (empty($files['newfile'])) {
-            $response->withJson('{ "erro" : { "Nenhum arquivo enviado"} }');
-            $response->withStatus(500);
-            return $response;
-        }
+        $method = $request->getMethod();
 
-        $arquivo     = $files['newfile'];
-        //$arquivo = $request->getParam('arquivo'); //Pega caminho do arquivo enviado por parâmetro
-        $fileContent = file_get_contents($arquivo); //Pega dados do arquivo de retorno
-        $arquivo     = new Retorno($fileContent); //Processa retorno
-        $registros   = $arquivo->getRegistros(); //Peg registros
-        foreach ($registros as $registro) {
-            //Pra cada registro, fazemos a inclusão se foi pago
-            if ($registro->codigo_movimento == 6) {
-                $retorno = array('nosso_numero' => $registro->nosso_numero, 'carteira' => $registro->carteira,
-                    'valor_recebido' => $registro->vlr_pago, 'data_pagamento' => $registro->data_ocorrencia,
-                    'processado' => new \MongoDate());
-                $this->mongodb->retornos->insert($retorno);
+        if ($method == 'GET') {
+            $this->view->render($response, 'retorno.twig');
+            return $response;
+            
+        } else if ($method == 'POST') {
+            $files = $request->getUploadedFiles('');
+            if (empty($files['newfile'])) {
+                $response->withJson('{ "erro" : { "Nenhum arquivo enviado"} }');
+                $response->withStatus(500);
+                return $response;
             }
+
+            $arquivo     = $files['newfile'];
+            //$arquivo = $request->getParam('arquivo'); //Pega caminho do arquivo enviado por parâmetro
+            $fileContent = file_get_contents($arquivo); //Pega dados do arquivo de retorno
+            $arquivo     = new Retorno($fileContent); //Processa retorno
+            $registros   = $arquivo->getRegistros(); //Peg registros
+            foreach ($registros as $registro) {
+                //Pra cada registro, fazemos a inclusão se foi pago
+                if ($registro->codigo_movimento == 6) {
+                    $retorno = array('nosso_numero' => $registro->nosso_numero, 'carteira' => $registro->carteira,
+                        'valor_recebido' => $registro->vlr_pago, 'data_pagamento' => $registro->data_ocorrencia,
+                        'processado' => new \MongoDate());
+                    $this->mongodb->retornos->insert($retorno);
+                }
+            }
+        } else {
+            die('Você não deveria estar aqui...');
         }
     }
 }

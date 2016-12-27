@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>PBC</title>
+        <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+        <link href='{{ base_url() }}/css/style.css' rel='stylesheet' type='text/css'>
+        <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <form class="form-horizontal">
+        <fieldset>
+
+        <!-- Form Name -->
+        <legend>Processar Retorno</legend>
+
+        <!-- File Button --> 
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="retorno">Arquivo de Retorno</label>
+          <div class="col-md-4">
+            <input id="retorno" name="retorno" class="input-file" type="file">
+          </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="submit"></label>
+          <div class="col-md-4">
+            <button id="submit" name="submit" class="btn btn-default">Enviar</button>
+          </div>
+        </div>
+
+        </fieldset>
+        </form>
+    </body>
+</html>
