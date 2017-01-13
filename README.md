@@ -17,8 +17,9 @@ O projeto utiliza HHVM 3.15.3 + MongoDB 3.2
 * [boletophp] - Biblioteca para gerar boletos
 
 ### Instruções
-  - POST http://localhost/setup para gerar as collections no MongoDB 
-  - POST http://localhost/setup/clear para fazer um reset da API
+  - GET http://localhost para página inicial da API
+  - GET http://localhost/setup para gerar as collections no MongoDB 
+  - GET http://localhost/setup/clear para fazer um reset da API
   - POST http://localhost/remessa/gerar com o json seguindo o padrão abaixo para gerar uma remessa:
 
 Json exemplo: 
