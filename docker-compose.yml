@@ -5,21 +5,18 @@ pbc-front:
     - "443:443"
     - "9000:9000"
   links:
-    - pbc-mongo:mongo
-    - pbc-redis:redis
+    - pbc-mongodb:pbc-mongodb
+
   volumes:
     - ./www:/var/www
     - ./sites:/etc/nginx/conf.d
     - ./logs:/var/log/supervisor
-    
-pbc-mongo:
+
+
+pbc-mongodb:
   image: mongo
-  container_name: pbc-mongodb
+  hostname: pbc-mongodb
   ports:
     - "27017:27017"
 
-pbc-redis:
-  image: redis
-  container_name: pbc-redis
-  ports:
-    - "6379:6379"
+

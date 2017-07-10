@@ -13,12 +13,14 @@ RUN rm -f /etc/nginx/conf.d/*
 
 # Install packages
 RUN apt-get update && apt-get install -my \
+  git \
   supervisor \
   curl \
   wget \
   php5-curl \
   php5-fpm \
   php5-gd \
+  php5-mongo \
   php5-memcached \
   php5-mysql \
   php5-mcrypt \
@@ -44,36 +46,23 @@ RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
 
 # Install HHVM
 RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
-RUN echo deb http://dl.hhvm.com/debian jessie main | tee /etc/apt/sources.list.d/hhvm.list
-RUN apt-get update -qq
-RUN apt-get upgrade -y -qq
-RUN apt-get install -y -qq nano curl sudo hhvm-dev git-core automake autoconf libtool gcc
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+#RUN echo "deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/3.4 main" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 
-# install libbson
-RUN git clone git://github.com/mongodb/libbson.git /tmp/libbson
-WORKDIR /tmp/libbson
-RUN ./autogen.sh
-RUN make && sudo make install
+RUN echo deb http://dl.hhvm.com/debian jessie main | tee /etc/apt/sources.list.d/hhvm.list
+RUN apt-get update && apt-get install -y hhvm php5-dev php5-cli php-pear php5-mongo
+RUN pecl install mongo
 
 # install mongofill-hhvm
-RUN git clone https://github.com/mongofill/mongofill-hhvm /tmp/mongofill-hhvm
-WORKDIR /tmp/mongofill-hhvm
-RUN ./build.sh
+#RUN git clone https://github.com/mongofill/mongofill-hhvm /tmp/mongofill-hhvm
+#WORKDIR /tmp/mongofill-hhvm
+#RUN ./build.sh
 
 RUN mkdir -p /session
 
 # install extension
-RUN mkdir -p /etc/hhvm/extensions
-RUN cp /tmp/mongofill-hhvm/mongo.so /etc/hhvm/extensions/mongo.so
-RUN echo 'hhvm.dynamic_extension_path = /etc/hhvm/extensions' >> /etc/hhvm/php.ini
 RUN echo 'hhvm.dynamic_extensions[mongo] = mongo.so' >> /etc/hhvm/php.ini
-RUN echo 'hhvm.dynamic_extension_path = /etc/hhvm/extensions' >> /etc/hhvm/server.ini
 RUN echo 'hhvm.dynamic_extensions[mongo] = mongo.so' >> /etc/hhvm/server.ini
-
-# clean up
-RUN rm -Rf /tmp/libbson
-RUN rm -Rf /tmp/mongofill-hhvm
-RUN rm -f /tmp/version.h
 
 # Add configuration files
 COPY conf/nginx.conf /etc/nginx/
@@ -84,7 +73,7 @@ COPY conf/php.ini /etc/php5/fpm/conf.d/40-custom.ini
 # Volumes
 ################################################################################
 
-VOLUME ["/var/www", "/etc/nginx/conf.d", "/session"]
+VOLUME ["/var/www", "/etc/nginx/conf.d"]
 
 ################################################################################
 # Ports
