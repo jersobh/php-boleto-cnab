@@ -18,4 +18,5 @@ $app->group('/retorno', function () {
 
 $app->group('/boleto', function () {
     $this->post('/gerar', 'App\Controller\CnabController:geraBoleto');
+    $this->get('/teste', 'App\Controller\BoletoController:testeBoleto');
 });

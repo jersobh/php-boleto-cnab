@@ -243,7 +243,7 @@ final class RemessaController
             $lote->inserirDetalhe(array(
                 'codigo_ocorrencia' => 1, //1 = Entrada de título, para outras opçoes ver nota explicativa C004 manual Cnab_SIGCB na pasta docs
                 'nosso_numero' => $boleto->nosso_numero, // numero sequencial de boleto
-                'seu_numero' => '', // se nao informado usarei o nosso numero
+                'seu_numero' => $boleto->nosso_numero, // se nao informado usarei o nosso numero
                 /* campos necessarios somente para itau cnab400, não precisa comentar se for outro layout    */
                 'carteira_banco' => $boleto->carteira, // codigo da carteira ex: 109,RG esse vai o nome da carteira no banco
                 'cod_carteira' => $boleto->cod_carteira, // I para a maioria ddas carteiras do itau

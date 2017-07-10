@@ -1,6 +1,8 @@
 <?php
 // DIC configuration
+error_reporting(1);
 
+define(PASTA_LOGOS, 'https://cdn.rawgit.com/CobreGratis/boletophp/2.x-dev/imagens/'); 
 $container = $app->getContainer();
 
 // -----------------------------------------------------------------------------
