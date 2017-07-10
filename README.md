@@ -11,7 +11,7 @@ $ composer update
 ```
 ### Tecnologias
 
-O projeto utiliza HHVM 3.15.3 + MongoDB 3.2
+O projeto utiliza:
 * [OpenCnabPHP] - Biblioteca para gerar remessas e processar retornos - Itaú, Caixa e Sicoob
 * [CnabPHP] - Biblioteca para gerar remessas e processar retornos - Banco do Brasil
 * [boletophp] - Biblioteca para gerar boletos
@@ -51,8 +51,8 @@ Json exemplo:
 			"data_emissao": "30/11/2016",
 			"vlr_juros": "1.15",
 			"taxa_juros": "1%",
-			"data_desconto": "",
-			"vlr_desconto": "",
+			"data_desconto": "26/11/2016",
+			"vlr_desconto": "0",
 			"prazo": "",
 			"mensagem": "",
 			"email_pagador": "",
@@ -78,8 +78,8 @@ Json exemplo:
 			"data_emissao": "30/11/2016",
 			"vlr_juros": "1.15",
 			"taxa_juros": "1%",
-			"data_desconto": "",
-			"vlr_desconto": "",
+			"data_desconto": "30/11/2016",
+			"vlr_desconto": "0",
 			"prazo": "",
 			"mensagem": "",
 			"email_pagador": "",
