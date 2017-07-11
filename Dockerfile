@@ -2,7 +2,7 @@
 # Base image
 ################################################################################
 
-FROM nginx
+FROM debian:jessie
 
 ################################################################################
 # Build instructions
@@ -12,6 +12,13 @@ FROM nginx
 RUN rm -f /etc/nginx/conf.d/*
 
 # Install packages
+RUN echo deb http://ftp.br.debian.org/debian jessie main | tee /etc/apt/sources.list.d/debian.list
+RUN echo deb-src http://ftp.br.debian.org/debian jessie main | tee /etc/apt/sources.list.d/debian.list
+RUN echo deb http://ftp.br.debian.org/debian jessie-updates main | tee /etc/apt/sources.list.d/debian.list
+RUN echo deb-src http://ftp.br.debian.org/debian jessie-updates main | tee /etc/apt/sources.list.d/debian.list
+RUN echo deb http://security.debian.org/ jessie/updates main | tee /etc/apt/sources.list.d/debian.list
+RUN echo deb-src http://security.debian.org/ jessie/updates main | tee /etc/apt/sources.list.d/debian.list
+
 RUN apt-get update && apt-get install -my \
   git \
   supervisor \
