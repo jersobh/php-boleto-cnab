@@ -27,7 +27,7 @@
         "slim/twig-view": "^2.0",
         "slim/flash": "^0.1.0",
         "monolog/monolog": "^1.13",
-        "rctnet/opencnabphp": "@dev",
+        "quilhasoft/opencnabphp": "@dev",
         "andersondanilo/cnab_php": "@dev",
         "cobregratis/boletophp": "dev-2.x-dev"
     },

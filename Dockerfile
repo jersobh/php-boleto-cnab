@@ -11,6 +11,9 @@ FROM debian:jessie
 # Remove default nginx configs.
 RUN rm -f /etc/nginx/conf.d/*
 
+RUN chmod o+r /etc/resolv.conf
+
+
 # Install packages
 RUN echo deb http://ftp.br.debian.org/debian jessie main | tee /etc/apt/sources.list.d/debian.list
 RUN echo deb-src http://ftp.br.debian.org/debian jessie main | tee /etc/apt/sources.list.d/debian.list
@@ -19,7 +22,11 @@ RUN echo deb-src http://ftp.br.debian.org/debian jessie-updates main | tee /etc/
 RUN echo deb http://security.debian.org/ jessie/updates main | tee /etc/apt/sources.list.d/debian.list
 RUN echo deb-src http://security.debian.org/ jessie/updates main | tee /etc/apt/sources.list.d/debian.list
 
-RUN apt-get update && apt-get install -my \
+RUN apt-get update && apt-get upgrade -y
+RUN apt-cache search php5
+
+
+RUN apt-get install -my \
   git \
   supervisor \
   curl \
@@ -33,7 +40,10 @@ RUN apt-get update && apt-get install -my \
   php5-mcrypt \
   php5-sqlite \
   php5-xdebug \
-  php-apc
+  php5-apcu \
+  nginx
+
+RUN apt-get install -my pkg-config libssl-dev
 
 # Ensure that PHP5 FPM is run as root.
 RUN sed -i "s/user = www-data/user = root/" /etc/php5/fpm/pool.d/www.conf
@@ -52,29 +62,29 @@ RUN sed -i '/^;pm\.status_path/s/^;//' /etc/php5/fpm/pool.d/www.conf
 RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
 
 # Install HHVM
-RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+#RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
+#RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
 #RUN echo "deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/3.4 main" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 
-RUN apt-get update && apt-get install -y php5-dev php5-cli php-pear php5-mongo
-RUN pecl install mongo
+RUN apt-get update && apt-get install -y php5-dev php5-cli php-pear php5-mongo curl nano unzip
+#RUN pecl install mongo
+#RUN pecl install mongodb-1.1.9
 
-# install mongofill-hhvm
-#RUN git clone https://github.com/mongofill/mongofill-hhvm /tmp/mongofill-hhvm
-#WORKDIR /tmp/mongofill-hhvm
-#RUN ./build.sh
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 
 RUN mkdir -p /session
 
-# install extension
-RUN echo 'hhvm.dynamic_extensions[mongo] = mongo.so' >> /etc/hhvm/php.ini
-RUN echo 'hhvm.dynamic_extensions[mongo] = mongo.so' >> /etc/hhvm/server.ini
+WORKDIR 'www/api'
+
+RUN composer install
 
 # Add configuration files
 COPY conf/nginx.conf /etc/nginx/
 COPY conf/supervisord.conf /etc/supervisor/conf.d/
 COPY conf/php.ini /etc/php5/fpm/conf.d/40-custom.ini
 
+RUN service nginx reload
 ################################################################################
 # Volumes
 ################################################################################

@@ -6,17 +6,13 @@ pbc-front:
     - "9000:9000"
   links:
     - pbc-mongodb:pbc-mongodb
-
   volumes:
     - ./www:/var/www
     - ./sites:/etc/nginx/conf.d
     - ./logs:/var/log/supervisor
-
 
 pbc-mongodb:
   image: mongo
   hostname: pbc-mongodb
   ports:
     - "27017:27017"
-
-

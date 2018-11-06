@@ -4,11 +4,14 @@ API's para boletos com registro (CNAB 240/CNAB 400), para gerar boletos, arquivo
 ### Docker
 
 ```sh
-$ cd php-boleto-cnab
-$ docker-compose up
-$ cd www/api
-$ composer update
+$ cd php-boleto-cnab  
+$ docker-compose build  
+$ docker-compose up  
 ```
+### Changelog
+ - Correções no docker
+ - Instalação automática das dependências 
+ 
 ### Tecnologias
 
 O projeto utiliza:
