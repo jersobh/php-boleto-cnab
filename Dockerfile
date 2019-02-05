@@ -77,6 +77,8 @@ RUN mkdir -p /session
 
 WORKDIR 'www/api'
 
+COPY './www/api/composer.json' '/www/api'
+
 RUN composer install
 
 # Add configuration files
