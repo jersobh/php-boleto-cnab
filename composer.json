@@ -13,6 +13,14 @@
             }
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "App\\": [
+              "app/src",
+              "tests/app/src"
+            ]
+        }
+    },
     "require": {
         "jersobh/php-boleto-cnab": "*"
     } 
