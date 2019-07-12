@@ -81,6 +81,8 @@ COPY './www/api/composer.json' '/www/api'
 
 RUN composer install
 
+RUN composer update
+
 # Add configuration files
 COPY conf/nginx.conf /etc/nginx/
 COPY conf/supervisord.conf /etc/supervisor/conf.d/
@@ -97,7 +99,7 @@ VOLUME ["/var/www", "/etc/nginx/conf.d"]
 # Ports
 ################################################################################
 
-EXPOSE 80 443 9000
+EXPOSE 8080 9000
 
 ################################################################################
 # Entrypoint
