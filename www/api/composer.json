@@ -29,7 +29,8 @@
         "monolog/monolog": "^1.13",
         "quilhasoft/opencnabphp": "@dev",
         "andersondanilo/cnab_php": "@dev",
-        "cobregratis/boletophp": "dev-2.x-dev"
+        "cobregratis/boletophp": "dev-2.x-dev",
+        "openboleto/openboleto": "dev-master"
     },
     "minimum-stability": "dev"
 }
