@@ -6,7 +6,6 @@ pbc-front:
     - "9000:9000"
   links:
     - pbc-mongodb:pbc-mongodb
-  build: ./
   volumes:
     - ./www:/var/www
     - ./sites:/etc/nginx/conf.d
