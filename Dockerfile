@@ -75,11 +75,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN mkdir -p /session
 
-WORKDIR 'www/api'
+WORKDIR '/var/www/api'
 
-COPY './www/api/composer.json' '/www/api'
+COPY './www/api/composer.json' '/var/www/api'
 
-RUN composer install
+RUN cd /var/www/api && composer install
 
 # Add configuration files
 COPY conf/nginx.conf /etc/nginx/
