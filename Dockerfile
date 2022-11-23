@@ -70,16 +70,19 @@ RUN apt-get update && apt-get install -y php5-dev php5-cli php-pear php5-mongo c
 #RUN pecl install mongo
 #RUN pecl install mongodb-1.1.9
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php
 
+RUN chmod +x composer.phar
+
+RUN mv composer.phar /usr/local/bin/composer
 
 RUN mkdir -p /session
 
 WORKDIR '/var/www/api'
 
-COPY './www/api/composer.json' '/var/www/api'
+COPY './www/api/composer.json' '/var/www/api/'
 
-RUN cd /var/www/api && composer install
+RUN cd /var/www/api/ && composer install
 
 # Add configuration files
 COPY conf/nginx.conf /etc/nginx/
